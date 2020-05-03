@@ -38,3 +38,5 @@ After the merge, everyone has to keep their local master branch updated with the
 `git pull origin master` - pull from github master branch
 
 `git push origin master` - push to github master branch
+
+[For more info](https://github.com/susam/gitpr#quick-reference)
