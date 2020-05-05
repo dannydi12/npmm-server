@@ -65,11 +65,11 @@ Javascript
 
 ## Authors
 
-**Daniel Di Venere** - [Portfolio](https://)
-**Josh Young** - [Portfolio](https://joshyoung.net)
-**Matthew Malecki** - [Portfolio](https://)
-**Michael Ploughman** - [Portfolio](https://)
-**Vik Birdi** - [Portfolio](https://)
+- **Daniel Di Venere** - [Portfolio](https://)
+- **Josh Young** - [Portfolio](https://joshyoung.net)
+- **Matthew Malecki** - [Portfolio](https://)
+- **Michael Ploughman** - [Portfolio](https://)
+- **Vik Birdi** - [Portfolio](https://)
 
 ## License
 
