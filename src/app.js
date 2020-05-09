@@ -17,11 +17,10 @@ app.use((error, req, res, next) => {
   if (NODE_ENV === 'production') {
     response = {
       error: {
-        message: 'server error'
-      }
+        message: 'server error',
+      },
     };
-  }
-  else {
+  } else {
     console.log(error);
     response = { message: error.message, error };
   }
