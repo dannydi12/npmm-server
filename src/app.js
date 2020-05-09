@@ -5,6 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('../config');
 const collectionRoute = require('./collections/collections-route');
+const packagesRoute = require('./packages/packages-route');
 
 const app = express();
 
@@ -29,5 +30,6 @@ app.use((error, req, res, next) => {
 });
 
 app.use('/api/collections', collectionRoute);
+app.use('/api/packages', packagesRoute);
 
 module.exports = app;
