@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('../config');
+const collectionRoute = require('./collections/collections-route');
 
 const app = express();
 
@@ -27,8 +28,6 @@ app.use((error, req, res, next) => {
   res.status(500).send(response);
 });
 
-app.get('/', (req, res) => {
-  res.send('Hello, world!');
-});
+app.use('/api/collections', collectionRoute);
 
 module.exports = app;
