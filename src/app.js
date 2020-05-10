@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('../config');
+const authRoute = require('./auth/auth-router');
 const collectionRoute = require('./collections/collections-route');
 const packagesRoute = require('./packages/packages-route');
 
@@ -29,6 +30,7 @@ app.use((error, req, res, next) => {
   res.status(500).send(response);
 });
 
+app.use('/api/auth', authRoute);
 app.use('/api/collections', collectionRoute);
 app.use('/api/packages', packagesRoute);
 

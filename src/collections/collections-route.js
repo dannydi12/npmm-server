@@ -5,12 +5,10 @@ const collectionRouter = express.Router();
 const jsonBodyParser = express.json();
 
 collectionRouter.route('/').get((req, res, next) => {
-  let id = req.query.userId;
-
   collectionService
-    .getAllCollections(req.app.get('db'), id)
-    .then((user_collections) => {
-      res.status(200).json(user_collections);
+    .getAllCollections(req.app.get('db'))
+    .then((all_collections) => {
+      res.status(200).json(collectionService.cleanCollection(all_collections));
     })
     .catch(next);
 });
