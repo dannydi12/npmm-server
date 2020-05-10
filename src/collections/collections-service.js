@@ -2,7 +2,7 @@ const xss = require('xss');
 
 const collectionsService = {
   getAllCollections(db, id) {
-    return db('collections').returning('*');
+    return db('collections').where({ user_id: `${id}` });
   },
 
   cleanCollection(collection) {

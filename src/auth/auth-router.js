@@ -31,11 +31,17 @@ authRouter.post('/login', jsonBodyParser, (req, res, next) => {
             .json({ error: 'Incorrect user_name or password' });
         }
         const sub = dbUser.email;
-        const payload = { email: dbUser.id };
+        const payload = { userId: dbUser.id };
         res.send({ authToken: AuthService.createJwt(sub, payload) });
       });
     })
     .catch(next);
+});
+
+authRouter.post('/user', jsonBodyParser, (req, res, next) => {
+  const { email, password } = req.body;
+  const payload = { userPass: `${password}` };
+  res.send({ authToken: AuthService.createJwt(email, payload) });
 });
 
 module.exports = authRouter;

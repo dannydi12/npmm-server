@@ -7,6 +7,7 @@ const { NODE_ENV } = require('../config');
 const authRoute = require('./auth/auth-router');
 const collectionRoute = require('./collections/collections-route');
 const packagesRoute = require('./packages/packages-route');
+const userRoute = require('./user/user-route');
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use((error, req, res, next) => {
 });
 
 app.use('/api/auth', authRoute);
+app.use('/api/user', userRoute);
 app.use('/api/collections', collectionRoute);
 app.use('/api/packages', packagesRoute);
 
