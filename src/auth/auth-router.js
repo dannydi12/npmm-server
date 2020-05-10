@@ -38,10 +38,4 @@ authRouter.post('/login', jsonBodyParser, (req, res, next) => {
     .catch(next);
 });
 
-authRouter.post('/user', jsonBodyParser, (req, res, next) => {
-  const { email, password } = req.body;
-  const payload = { userPass: `${password}` };
-  res.send({ authToken: AuthService.createJwt(email, payload) });
-});
-
 module.exports = authRouter;
