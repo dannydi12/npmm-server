@@ -29,7 +29,7 @@ collectionRouter
     collectionService
       .addCollection(req.app.get('db'), name, user_id, isLaunchPad)
       .then((collection) => {
-        res.status(201).end();
+        res.status(201).json(collection);
       });
   });
 
