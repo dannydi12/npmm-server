@@ -1,9 +1,9 @@
 const packagesService = {
-  getAllPackages(db) {
-    return db('packages');
-  },
-  collectionSpecificPackages(db, collectionId) {
-    return db('packages').where({ collection: `${collectionId}` });
+  addPackage(db, collection, name) {
+    return db('packages')
+      .insert({ collection, name })
+      .returning('*')
+      .then((row) => row[0]);
   },
 };
 

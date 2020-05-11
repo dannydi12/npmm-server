@@ -22,5 +22,5 @@ CREATE TABLE packages (
   id SERIAL,
   collection INTEGER REFERENCES collections(id) ON DELETE SET NULL,
   name TEXT NOT NULL,
-  version TEXT
+  version TEXT 
 );
