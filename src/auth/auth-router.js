@@ -30,8 +30,9 @@ authRouter.post('/login', jsonBodyParser, (req, res, next) => {
             .status(400)
             .json({ error: 'Incorrect user_name or password' });
         }
-        const sub = dbUser.email;
-        const payload = { userId: dbUser.id };
+
+        const sub = `${dbUser.id}`;
+        const payload = { email: dbUser.email };
         res.send({ authToken: AuthService.createJwt(sub, payload) });
       });
     })
