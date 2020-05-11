@@ -8,15 +8,12 @@ const jsonBodyParser = express.json();
 
 userRouter.route('/').post(jsonBodyParser, (req, res, next) => {
   let { email, password } = req.body;
-  let saltedPass;
 
-  // bcrypt.hash(password, 3).then((pass) => {
-
-  // });
+  let saltedPass = bcrypt.hashSync(password, 3);
 
   let sub;
-  let payload = { email: `${email}` };
-  console.log(payload);
+  let payload = { email: `${email}`, password: `${saltedPass}` };
+
   userService
     .registerUser(req.app.get('db'), email, saltedPass)
     .then((idResponse) => {
