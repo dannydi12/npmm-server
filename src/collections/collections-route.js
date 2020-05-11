@@ -9,12 +9,10 @@ collectionRouter
   .route('/')
   .all(requireAuth)
   .get((req, res, next) => {
-    // let launchFlag = req.query.type;
-    // let payload = helperService.handleToken(req.get('Authorization'));
+    let type = req.query.type;
 
-    console.log(req.payload.sub);
     collectionService
-      .getAllCollections(req.app.get('db'), req.payload.sub)
+      .getAllCollections(req.app.get('db'), req.payload.sub, type)
       .then((all_collections) => {
         res
           .status(200)
