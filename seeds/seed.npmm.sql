@@ -1,9 +1,8 @@
 
-
-
+-- password is 'demopassword'
 INSERT INTO users (email, password) 
 VALUES
-('demo@demo.com', 'demopassword');
+('demo@demo.com', '$2a$04$DjkbEZXF5djK5j/wgpjBY.vqOxiqvUk5tXUSlvwQIv0sOOmmFV/O6');
 
 INSERT INTO collections (user_id, collection_name, is_launchpad)
 VALUES
