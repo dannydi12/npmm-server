@@ -1,8 +1,11 @@
+
+
+
 INSERT INTO users (email, password) 
 VALUES
 ('demo@demo.com', 'demopassword');
 
-INSERT INTO collections (user_id, collection_name)
+INSERT INTO collections (user_id, collection_name, is_launchpad)
 VALUES
 (1, 'React Front', false),
 (1, 'Node Server', false),
