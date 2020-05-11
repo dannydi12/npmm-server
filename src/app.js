@@ -5,10 +5,9 @@ const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('../config');
 const authRoute = require('./auth/auth-router');
-const collectionRoute = require('./collections/collections-route');
+const collectionsRoute = require('./collections/collections-route');
 const packagesRoute = require('./packages/packages-route');
-const userRoute = require('./user/user-route');
-const cliRoute = require('./cli/cli-route');
+const usersRoute = require('./users/users-route');
 
 const app = express();
 
@@ -32,10 +31,9 @@ app.use((error, req, res, next) => {
   res.status(500).send(response);
 });
 
-app.use('/api/cli', cliRoute);
 app.use('/api/auth', authRoute);
-app.use('/api/user', userRoute);
-app.use('/api/collections', collectionRoute);
+app.use('/api/users', usersRoute);
+app.use('/api/collections', collectionsRoute);
 app.use('/api/packages', packagesRoute);
 
 module.exports = app;
