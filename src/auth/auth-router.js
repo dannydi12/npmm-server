@@ -4,6 +4,8 @@ const AuthService = require('./auth-service');
 const authRouter = express.Router();
 const jsonBodyParser = express.json();
 
+//do not attempt this endpoint with demo user because password isnt saved as hash.
+
 authRouter.post('/login', jsonBodyParser, (req, res, next) => {
   const { email, password } = req.body;
   const loginuser = { email, password };
