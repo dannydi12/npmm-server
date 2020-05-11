@@ -1,18 +1,20 @@
 const express = require('express');
-const userService = require('./user-service');
+const usersService = require('./users-service');
 const AuthService = require('../auth/auth-service');
 const bcrypt = require('bcryptjs');
 
-const userRouter = express.Router();
+const usersRouter = express.Router();
 const jsonBodyParser = express.json();
 
-userRouter.route('/').post(jsonBodyParser, (req, res, next) => {
+usersRouter.route('/').post(jsonBodyParser, (req, res, next) => {
   let { email, password } = req.body;
-  let saltedPass = bcrypt.hash(password, 3);
-  let sub;
-  let payload = { email: `${email}`, password: `${saltedPass}` };
 
-  userService
+  let saltedPass = bcrypt.hashSync(password, 11);
+
+  let sub;
+  let payload = { email: `${email}` };
+
+  usersService
     .registerUser(req.app.get('db'), email, saltedPass)
     .then((idResponse) => {
       sub = `${idResponse}`;
@@ -20,4 +22,4 @@ userRouter.route('/').post(jsonBodyParser, (req, res, next) => {
     });
 });
 
-module.exports = userRouter;
+module.exports = usersRouter;
