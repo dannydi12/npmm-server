@@ -13,7 +13,9 @@ const collectionsService = {
     return db('collections').where({ id }).update({
       collection_name: name,
       is_launchpad: isLaunchPad,
-    });
+    })
+      .returning('*')
+      .then(row => row[0]);;
   },
 
   deleteCollection(db, id) {
@@ -25,7 +27,9 @@ const collectionsService = {
       collection_name: name,
       user_id: user_id,
       is_launchpad: is_launchpad,
-    });
+    })
+      .returning('*')
+      .then(row => row[0]);
   },
 
   serializeCollection(collection) {
