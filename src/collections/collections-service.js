@@ -1,4 +1,5 @@
 const xss = require('xss');
+const fetch = require('node-fetch');
 
 const collectionsService = {
   getAllCollections(db, id, type = null) {
@@ -9,6 +10,10 @@ const collectionsService = {
     } else {
       return db('collections').where({ user_id: id });
     }
+  },
+
+  getPackagesByCollection(db, collectionId) {
+    return db('packages').where({ collection: collectionId });
   },
 
   cleanCollection(collection) {
@@ -28,6 +33,30 @@ const collectionsService = {
 
   deleteCollection(db, id) {
     return db('collections').where({ id }).del();
+  },
+
+  npmsAPI(nameArray) {
+    return fetch('https://api.npms.io/v2/package/mget', {
+      headers: {
+        'content-type': 'application/json',
+      },
+      method: 'post',
+      body: JSON.stringify(nameArray),
+    })
+      .then((result) => result.json())
+      .then((resJSON) => {
+        const packages = nameArray.map((name) => {
+          if (resJSON[name]) {
+            return {
+              name,
+              score: resJSON[name].score,
+              description: resJSON[name].collected.metadata.description,
+              links: resJSON[name].collected.metadata.links,
+            };
+          }
+        });
+        return packages;
+      });
   },
 
   addCollection(db, name, user_id, is_launchpad = 'false') {

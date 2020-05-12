@@ -34,6 +34,27 @@ collectionRouter
 collectionRouter
   .route('/:collectionId')
   .all(requireAuth)
+  .get((req, res, next) => {
+    const { justNames } = req.query;
+    const { collectionId } = req.params;
+
+    if (justNames === 'true') {
+      return collectionService
+        .getPackagesByCollection(req.app.get('db'), collectionId)
+        .then((packs) => {
+          return res.json(packs);
+        });
+    }
+
+    collectionService
+      .getPackagesByCollection(req.app.get('db'), collectionId)
+      .then((collection) => {
+        const names = collection.map((set) => set.name);
+        collectionService.npmsAPI(names).then((data) => {
+          return res.json(data.filter((element) => element != null));
+        });
+      });
+  })
   .patch(requireAuth, jsonBodyParser, (req, res) => {
     const { collectionId } = req.params;
     const { name, isLaunchPad } = req.body;

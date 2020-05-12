@@ -25,6 +25,7 @@
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.1",
     "morgan": "^1.9.1",
+    "node-fetch": "^2.6.0",
     "pg": "^8.0.3",
     "postgrator-cli": "^3.3.0",
     "xss": "^1.0.6"
