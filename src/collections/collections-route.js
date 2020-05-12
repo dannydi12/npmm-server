@@ -38,6 +38,14 @@ collectionRouter
     const { justNames } = req.query;
     const { collectionId } = req.params;
 
+    if (justNames === 'true') {
+      return collectionService
+        .getPackagesByCollection(req.app.get('db'), collectionId)
+        .then((packs) => {
+          return res.json(packs);
+        });
+    }
+
     collectionService
       .getPackagesByCollection(req.app.get('db'), collectionId)
       .then((collection) => {
