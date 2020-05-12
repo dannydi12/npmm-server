@@ -10,9 +10,9 @@ authRouter
 
     AuthService.getUserWithUserName(req.app.get('db'), email).then((exists) => {
       if (exists) {
-        res.send(true);
+        res.send(true).end();
       } else {
-        res.send(false);
+        res.send(false).end();
       }
     });
   })

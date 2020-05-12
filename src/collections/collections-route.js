@@ -42,6 +42,10 @@ collectionRouter
       return collectionService
         .getPackagesByCollection(req.app.get('db'), collectionId)
         .then((packs) => {
+          // {
+          //   name:
+          //   packages:
+          // }
           return res.json(packs);
         });
     }
