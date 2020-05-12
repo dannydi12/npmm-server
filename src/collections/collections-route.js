@@ -46,21 +46,26 @@ collectionRouter
         });
     }
 
+    let collectionName = async () =>
+      await collectionService.getCollectionName(
+        req.app.get('db'),
+        collectionId
+      );
+
+    let nameOfCollection;
+    collectionName().then((name) => (nameOfCollection = name.collection_name));
+
     collectionService
       .getPackagesByCollection(req.app.get('db'), collectionId)
       .then((collection) => {
         const names = collection.map((set) => set.name);
 
-        collectionService
-          .getCollectionName(req.app.get('db'), collectionId)
-          .then((name) => {
-            collectionService.npmsAPI(names).then((data) => {
-              return res.json({
-                name: name.collection_name,
-                packs: data.filter((element) => element != null),
-              });
-            });
+        collectionService.npmsAPI(names).then((data) => {
+          return res.json({
+            name: nameOfCollection,
+            packs: data.filter((element) => element != null),
           });
+        });
       });
   })
   .patch(requireAuth, jsonBodyParser, (req, res) => {
