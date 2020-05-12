@@ -42,10 +42,6 @@ collectionRouter
       return collectionService
         .getPackagesByCollection(req.app.get('db'), collectionId)
         .then((packs) => {
-          // {
-          //   name:
-          //   packages:
-          // }
           return res.json(packs);
         });
     }
@@ -54,9 +50,17 @@ collectionRouter
       .getPackagesByCollection(req.app.get('db'), collectionId)
       .then((collection) => {
         const names = collection.map((set) => set.name);
-        collectionService.npmsAPI(names).then((data) => {
-          return res.json(data.filter((element) => element != null));
-        });
+
+        collectionService
+          .getCollectionName(req.app.get('db'), collectionId)
+          .then((name) => {
+            collectionService.npmsAPI(names).then((data) => {
+              return res.json({
+                name: name.collection_name,
+                packs: data.filter((element) => element != null),
+              });
+            });
+          });
       });
   })
   .patch(requireAuth, jsonBodyParser, (req, res) => {
