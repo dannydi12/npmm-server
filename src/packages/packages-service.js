@@ -5,6 +5,9 @@ const packagesService = {
       .returning('*')
       .then((row) => row[0]);
   },
+  deletePackage(db, id) {
+    return db('packages').where({ id }).del();
+  },
 };
 
 module.exports = packagesService;
