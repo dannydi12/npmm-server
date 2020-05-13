@@ -42,20 +42,29 @@ collectionRouter
       return collectionService
         .getPackagesByCollection(req.app.get('db'), collectionId)
         .then((packs) => {
-          // {
-          //   name:
-          //   packages:
-          // }
           return res.json(packs);
         });
     }
+
+    let collectionName = async () =>
+      await collectionService.getCollectionName(
+        req.app.get('db'),
+        collectionId
+      );
+
+    let nameOfCollection;
+    collectionName().then((name) => (nameOfCollection = name.collection_name));
 
     collectionService
       .getPackagesByCollection(req.app.get('db'), collectionId)
       .then((collection) => {
         const names = collection.map((set) => set.name);
+
         collectionService.npmsAPI(names).then((data) => {
-          return res.json(data.filter((element) => element != null));
+          return res.json({
+            name: nameOfCollection,
+            packs: data.filter((element) => element != null),
+          });
         });
       });
   })

@@ -19,6 +19,12 @@ const collectionsService = {
   cleanCollection(collection) {
     return collection.map(this.serializeCollection);
   },
+  getCollectionName(db, collectionId) {
+    return db('collections')
+      .where({ id: collectionId })
+      .returning('name')
+      .then((row) => row[0]);
+  },
 
   updateCollection(db, id, name, isLaunchPad) {
     return db('collections')
