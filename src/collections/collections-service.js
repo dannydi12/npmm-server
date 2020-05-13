@@ -54,10 +54,12 @@ const collectionsService = {
         const packages = nameArray.map((name) => {
           if (resJSON[name]) {
             return {
-              name,
+              package: {
+                name,
+                description: resJSON[name].collected.metadata.description,
+                links: resJSON[name].collected.metadata.links,
+              },
               score: resJSON[name].score,
-              description: resJSON[name].collected.metadata.description,
-              links: resJSON[name].collected.metadata.links,
             };
           }
         });
