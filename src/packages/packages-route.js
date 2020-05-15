@@ -9,20 +9,23 @@ packagesRouter
   .all(requireAuth)
   .post(jsonBodyParser, (req, res, next) => {
     const { collectionId, name } = req.body;
+
     packagesService
       .checkIfPackageExists(req.app.get('db'), collectionId, name)
       .then((pack) => {
+        console.log(pack);
         if (pack.length > 0) {
-          res.error('package exists!');
+          console.log('error');
+          res.status(400).send('package exists');
+        } else {
+          packagesService
+            .addPackage(req.app.get('db'), collectionId, name)
+            .then((addedPack) => {
+              return res.status(200).json(addedPack);
+            })
+            .catch(next);
         }
       });
-
-    packagesService
-      .addPackage(req.app.get('db'), collectionId, name)
-      .then((addedPack) => {
-        return res.status(200).json(addedPack);
-      })
-      .catch(next);
   });
 
 packagesRouter
