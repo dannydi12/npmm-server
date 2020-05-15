@@ -8,8 +8,9 @@ const jsonBodyParser = express.json();
 
 usersRouter.route('/').post(jsonBodyParser, (req, res, next) => {
   let { email, password } = req.body;
-  console.log(email);
-
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Missing required field' });
+  }
   let saltedPass = bcrypt.hashSync(password, 11);
 
   let sub;
