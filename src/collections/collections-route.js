@@ -9,10 +9,8 @@ collectionRouter
   .route('/')
   .all(requireAuth)
   .get((req, res, next) => {
-    let type = req.query.type;
-
     collectionService
-      .getAllCollections(req.app.get('db'), req.payload.sub, type)
+      .getAllCollections(req.app.get('db'), req.payload.sub)
       .then((all_collections) => {
         res
           .status(200)
@@ -25,7 +23,7 @@ collectionRouter
     const { name, isLaunchPad } = req.body;
     const user_id = req.payload.sub;
     collectionService
-      .addCollection(req.app.get('db'), name, user_id, isLaunchPad)
+      .addCollection(req.app.get('db'), name, user_id)
       .then((collection) => {
         res.status(201).json(collection);
       })

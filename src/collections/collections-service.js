@@ -3,13 +3,7 @@ const fetch = require('node-fetch');
 
 const collectionsService = {
   getAllCollections(db, id, type = null) {
-    if (type === 'launchpad') {
-      return db('collections').where({ user_id: id, is_launchpad: true });
-    } else if (type === 'collection') {
-      return db('collections').where({ user_id: id, is_launchpad: false });
-    } else {
-      return db('collections').where({ user_id: id });
-    }
+    return db('collections').where({ user_id: id });
   },
 
   getPackagesByCollection(db, collectionId) {
@@ -67,12 +61,11 @@ const collectionsService = {
       });
   },
 
-  addCollection(db, name, user_id, is_launchpad = 'false') {
+  addCollection(db, name, user_id) {
     return db('collections')
       .insert({
         collection_name: name,
         user_id: user_id,
-        is_launchpad: is_launchpad,
       })
       .returning('*')
       .then((row) => row[0]);
