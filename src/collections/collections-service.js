@@ -20,12 +20,11 @@ const collectionsService = {
       .then((row) => row[0]);
   },
 
-  updateCollection(db, id, name, isLaunchPad) {
+  updateCollection(db, id, name) {
     return db('collections')
       .where({ id })
       .update({
         collection_name: name,
-        is_launchpad: isLaunchPad,
       })
       .returning('*')
       .then((row) => row[0]);
