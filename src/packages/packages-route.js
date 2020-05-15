@@ -13,7 +13,8 @@ packagesRouter
       .addPackage(req.app.get('db'), collectionId, name)
       .then((addedPack) => {
         return res.status(200).json(addedPack);
-      });
+      })
+      .catch(next);
   });
 
 packagesRouter
@@ -26,7 +27,8 @@ packagesRouter
       .deletePackage(req.app.get('db'), packageId)
       .then((deleted) => {
         return res.status(204).end();
-      });
+      })
+      .catch(next);
   });
 
 module.exports = packagesRouter;

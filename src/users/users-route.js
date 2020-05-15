@@ -19,7 +19,8 @@ usersRouter.route('/').post(jsonBodyParser, (req, res, next) => {
     .then((idResponse) => {
       sub = `${idResponse}`;
       res.status(200).send({ authToken: AuthService.createJwt(sub, payload) });
-    });
+    })
+    .catch(next);
 });
 
 module.exports = usersRouter;

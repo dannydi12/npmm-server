@@ -28,7 +28,8 @@ collectionRouter
       .addCollection(req.app.get('db'), name, user_id, isLaunchPad)
       .then((collection) => {
         res.status(201).json(collection);
-      });
+      })
+      .catch(next);
   });
 
 collectionRouter
@@ -66,7 +67,8 @@ collectionRouter
             packs: data.filter((element) => element != null),
           });
         });
-      });
+      })
+      .catch(next);
   })
   .patch(requireAuth, jsonBodyParser, (req, res) => {
     const { collectionId } = req.params;
@@ -75,7 +77,8 @@ collectionRouter
       .updateCollection(req.app.get('db'), collectionId, name, isLaunchPad)
       .then((collection) => {
         res.status(200).json(collection);
-      });
+      })
+      .catch(next);
   })
   .delete(requireAuth, (req, res) => {
     const { collectionId } = req.params;
@@ -83,7 +86,8 @@ collectionRouter
       .deleteCollection(req.app.get('db'), collectionId)
       .then((result) => {
         res.status(204).end();
-      });
+      })
+      .catch(next);
   });
 
 module.exports = collectionRouter;

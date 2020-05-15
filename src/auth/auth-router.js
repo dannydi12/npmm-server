@@ -8,13 +8,15 @@ authRouter
   .get('/login', (req, res, next) => {
     let { email } = req.query;
 
-    AuthService.getUserWithUserName(req.app.get('db'), email).then((exists) => {
-      if (exists) {
-        res.send(true).end();
-      } else {
-        res.send(false).end();
-      }
-    });
+    AuthService.getUserWithUserName(req.app.get('db'), email)
+      .then((exists) => {
+        if (exists) {
+          res.send(true).end();
+        } else {
+          res.send(false).end();
+        }
+      })
+      .catch(next);
   })
   .post('/login', jsonBodyParser, (req, res, next) => {
     const { email, password } = req.body;
