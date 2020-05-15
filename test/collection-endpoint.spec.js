@@ -1,5 +1,6 @@
 const knex = require('knex');
 const app = require('../src/app');
+const assert = require('assert');
 
 describe('user registration', () => {
   let db;
@@ -14,7 +15,7 @@ describe('user registration', () => {
 
   after('disconnect from db', () => db.destroy());
 
-  before('cleanup', () => {
+  beforeEach('cleanup', () => {
     return db.raw(
       `TRUNCATE
       users
@@ -30,7 +31,7 @@ describe('user registration', () => {
     );
   });
 
-  before('create base user', () => {
+  beforeEach('create base user', () => {
     return db.raw(
       `INSERT INTO users (email, password)
        VALUES
@@ -42,11 +43,6 @@ describe('user registration', () => {
     it('A successful get call should return all users collections and a status 200', () => {
       let token =
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
-
-      const goodLoginData = {
-        email: 'demo@demo.com',
-        password: 'demopassword',
-      };
 
       return supertest(app)
         .get('/api/collections')
@@ -60,7 +56,6 @@ describe('user registration', () => {
 
       const testData = {
         name: 'testcollectionMATT',
-        isLaunchPad: false,
       };
 
       return supertest(app)
@@ -68,12 +63,64 @@ describe('user registration', () => {
         .set('Authorization', token)
         .send(testData)
         .expect((res) => {
-          res.body.id = 1;
-          res.body.user_id = 1;
-          res.body.collection_name = 'testcollectionMATT';
-          res.body.isLaunchPad = false;
+          assert.equal(res.body.id, 1);
+          assert.equal(res.body.user_id, 1);
+          assert.equal(res.body.collection_name, 'testcollectionMATT');
         })
         .expect(201);
     });
+
+    it('GET api/collection/:collectionid (no data) should return empty array', () => {
+      let token =
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
+
+      before('create a collection', () => {
+        return db.raw(
+          `INSERT INTO collections (user_id, collection_name)
+             VALUES
+             (1, 'test collection');`
+        );
+      });
+
+      return supertest(app)
+        .get('/api/collections/1')
+        .set('Authorization', token)
+        .expect(200);
+    });
+  });
+
+  it('PATCH api/collections/:collectionid responds with 200 and returns patched object', () => {
+    let token =
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
+
+    before('create a collection', () => {
+      return db.raw(
+        `INSERT INTO collections (user_id, collection_name)
+             VALUES
+             (1, 'test collection');`
+      );
+    });
+    return supertest(app)
+      .patch('/api/collections/1')
+      .set('Authorization', token)
+      .send({ name: 'updatedName' })
+      .expect(200);
+  });
+
+  it('DELETE api/collections/:collectionid responds with 204', () => {
+    let token =
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
+
+    before('create a collection', () => {
+      return db.raw(
+        `INSERT INTO collections (user_id, collection_name)
+             VALUES
+             (1, 'test collection');`
+      );
+    });
+    return supertest(app)
+      .delete('/api/collections/1')
+      .set('Authorization', token)
+      .expect(204);
   });
 });

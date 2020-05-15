@@ -22,12 +22,25 @@ collectionRouter
   .post(jsonBodyParser, (req, res, next) => {
     const { name } = req.body;
     const user_id = req.payload.sub;
+
+    if (!name) {
+      return res.status(400).send({ error: 'missing required field' });
+    }
+
     collectionService
-      .addCollection(req.app.get('db'), name, user_id)
+      .checkIfCollectionExists(req.app.get('db'), user_id, name)
       .then((collection) => {
-        res.status(201).json(collection);
-      })
-      .catch(next);
+        if (collection.length > 0) {
+          return res.status(400).send({ error: 'name exists' });
+        } else {
+          collectionService
+            .addCollection(req.app.get('db'), name, user_id)
+            .then((collection) => {
+              return res.status(201).json(collection);
+            })
+            .catch(next);
+        }
+      });
   });
 
 collectionRouter
@@ -36,6 +49,10 @@ collectionRouter
   .get((req, res, next) => {
     const { justNames } = req.query;
     const { collectionId } = req.params;
+
+    if (!Number(collectionId)) {
+      return res.status(400).send({ error: 'invalid query' });
+    }
 
     if (justNames === 'true') {
       return collectionService
@@ -52,7 +69,9 @@ collectionRouter
       );
 
     let nameOfCollection;
-    collectionName().then((name) => (nameOfCollection = name.collection_name));
+    collectionName().then((name) =>
+      name ? (nameOfCollection = name.collection_name) : null
+    );
 
     collectionService
       .getPackagesByCollection(req.app.get('db'), collectionId)
@@ -74,20 +93,39 @@ collectionRouter
   })
   .patch(jsonBodyParser, (req, res, next) => {
     const { collectionId } = req.params;
-    const { name } = req.body;
+    let { name } = req.body;
+    name = name.trim();
+
+    if (!Number(collectionId)) {
+      return res.status(400).send({ error: 'invalid query' });
+    }
+
+    if (!name) {
+      return res.status(400).send({ error: 'missing required field' });
+    }
+
+    if (name.length === 0) {
+      return res.status(400).send({ error: 'required field empty' });
+    }
+
     collectionService
       .updateCollection(req.app.get('db'), collectionId, name)
       .then((collection) => {
-        res.status(200).json(collection);
+        return res.status(200).json(collection);
       })
       .catch(next);
   })
   .delete((req, res, next) => {
     const { collectionId } = req.params;
+
+    if (!Number(collectionId)) {
+      return res.status(400).send({ error: 'invalid parameter' });
+    }
+
     collectionService
       .deleteCollection(req.app.get('db'), collectionId)
       .then((result) => {
-        res.status(204).end();
+        return res.status(204).end();
       })
       .catch(next);
   });
