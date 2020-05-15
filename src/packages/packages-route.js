@@ -10,6 +10,14 @@ packagesRouter
   .post(jsonBodyParser, (req, res, next) => {
     const { collectionId, name } = req.body;
     packagesService
+      .checkIfPackageExists(req.app.get('db'), collectionId, name)
+      .then((pack) => {
+        if (pack.length > 0) {
+          res.error('package exists!');
+        }
+      });
+
+    packagesService
       .addPackage(req.app.get('db'), collectionId, name)
       .then((addedPack) => {
         return res.status(200).json(addedPack);
