@@ -57,7 +57,7 @@ const collectionsService = {
                 name,
                 description: resJSON[name].collected.metadata.description,
                 links: resJSON[name].collected.metadata.links,
-                version
+                version: resJSON[version]
               },
               score: resJSON[name].score,
             };
