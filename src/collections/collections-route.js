@@ -58,8 +58,12 @@ collectionRouter
       .getPackagesByCollection(req.app.get('db'), collectionId)
       .then((collection) => {
         const names = collection.map((set) => set.name);
+        const ids = collection.map((set) => set.id);
 
         collectionService.npmsAPI(names).then((data) => {
+          for (let i in data) {
+            data[i]['id'] = ids[i];
+          }
           return res.json({
             name: nameOfCollection,
             packs: data.filter((element) => element != null),

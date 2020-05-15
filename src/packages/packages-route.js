@@ -15,7 +15,6 @@ packagesRouter
       .then((pack) => {
         console.log(pack);
         if (pack.length > 0) {
-          console.log('error');
           res.status(400).send('package exists');
         } else {
           packagesService
