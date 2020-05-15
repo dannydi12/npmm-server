@@ -30,6 +30,9 @@ describe('user registration', () => {
     );
   });
 
+  //before create base collection . find a collection on a post . send in a collection
+  //underneath base user
+
   before('create base user', () => {
     return db.raw(
       `INSERT INTO users (email, password)
@@ -42,11 +45,6 @@ describe('user registration', () => {
     it('A successful get call should return all users collections and a status 200', () => {
       let token =
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
-
-      const goodLoginData = {
-        email: 'demo@demo.com',
-        password: 'demopassword',
-      };
 
       return supertest(app)
         .get('/api/collections')
@@ -74,6 +72,62 @@ describe('user registration', () => {
           res.body.isLaunchPad = false;
         })
         .expect(201);
+    });
+
+    //get collections test
+
+    before('create base collection', () => {
+      return db.raw(
+        `INSERT INTO collections (user_id, collection_name, is_launchpad)
+      VALUES
+      (1, 'React Front', false);`
+      );
+    });
+
+    it('Get packages from a certain collection return 200', () => {
+      let token =
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
+
+      return supertest(app)
+        .get('/api/collections')
+        .query({ collectionId: '1' })
+        .set('Authorization', token)
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .then((res) => {
+          expect(res.body).to.be({ collectionId: '1' });
+        });
+    });
+
+    // delete collections test
+
+    before('create base collection', () => {
+      return db.raw(
+        `INSERT INTO collections (user_id, collection_name, is_launchpad)
+      VALUES
+      (1, 'Deletion Test', false);`
+      );
+    });
+
+    it('Deletes a package sends 204 response', () => {
+      let token =
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
+
+      // const testData = {
+      //   name: 'testcollectionMATT',
+      //   isLaunchPad: false,
+      // };
+
+      return (
+        supertest(app)
+          .post('/api/collections')
+          .query({ collectionId: '1' })
+          .set('Authorization', token)
+          .expect(204)
+          .expect('Content-Type', /json/)
+          // if {{collectionId} = 1} Can I write an if statement here checking against id = 1 only then delete
+          .deleteCollection(req.app.get('db'), { collectionId: 1 })
+      );
     });
   });
 });
