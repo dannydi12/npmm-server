@@ -2,8 +2,14 @@ const xss = require('xss');
 const fetch = require('node-fetch');
 
 const collectionsService = {
-  getAllCollections(db, id, type = null) {
+  getAllCollections(db, id) {
     return db('collections').where({ user_id: id });
+  },
+
+  checkIfCollectionExists(db, id, name) {
+    return db('collections')
+      .where({ user_id: id, collection_name: name })
+      .returning('*');
   },
 
   getPackagesByCollection(db, collectionId) {

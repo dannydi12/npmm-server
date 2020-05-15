@@ -21,6 +21,7 @@ authRouter
   .post('/login', jsonBodyParser, (req, res, next) => {
     const { email, password } = req.body;
     const loginuser = { email, password };
+    console.log(password);
 
     for (const [key, value] of Object.entries(loginuser))
       if (value == null)

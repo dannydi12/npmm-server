@@ -8,6 +8,7 @@ const jsonBodyParser = express.json();
 
 usersRouter.route('/').post(jsonBodyParser, (req, res, next) => {
   let { email, password } = req.body;
+  console.log(email);
 
   let saltedPass = bcrypt.hashSync(password, 11);
 

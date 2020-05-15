@@ -10,6 +10,13 @@ packagesRouter
   .post(jsonBodyParser, (req, res, next) => {
     const { collectionId, name } = req.body;
 
+    if ((!collectionId, !name)) {
+      return res.status(400).send({ error: 'missing required field' });
+    }
+    if (!Number(collectionId)) {
+      return res.status(400).send({ error: 'invalid input' });
+    }
+
     packagesService
       .checkIfPackageExists(req.app.get('db'), collectionId, name)
       .then((pack) => {
@@ -32,6 +39,10 @@ packagesRouter
   .all(requireAuth)
   .delete((req, res, next) => {
     const { packageId } = req.params;
+
+    if (!Number(packageId)) {
+      return res.status(400).send({ error: 'invalid input' });
+    }
 
     packagesService
       .deletePackage(req.app.get('db'), packageId)
