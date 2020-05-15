@@ -20,7 +20,7 @@ collectionRouter
   })
 
   .post(jsonBodyParser, (req, res, next) => {
-    const { name, isLaunchPad } = req.body;
+    const { name } = req.body;
     const user_id = req.payload.sub;
     collectionService
       .addCollection(req.app.get('db'), name, user_id)
@@ -74,9 +74,9 @@ collectionRouter
   })
   .patch(requireAuth, jsonBodyParser, (req, res) => {
     const { collectionId } = req.params;
-    const { name, isLaunchPad } = req.body;
+    const { name } = req.body;
     collectionService
-      .updateCollection(req.app.get('db'), collectionId, name, isLaunchPad)
+      .updateCollection(req.app.get('db'), collectionId, name)
       .then((collection) => {
         res.status(200).json(collection);
       })
