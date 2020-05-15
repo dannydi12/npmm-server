@@ -72,7 +72,7 @@ collectionRouter
       })
       .catch(next);
   })
-  .patch(requireAuth, jsonBodyParser, (req, res) => {
+  .patch(jsonBodyParser, (req, res, next) => {
     const { collectionId } = req.params;
     const { name } = req.body;
     collectionService
@@ -82,7 +82,7 @@ collectionRouter
       })
       .catch(next);
   })
-  .delete(requireAuth, (req, res) => {
+  .delete((req, res, next) => {
     const { collectionId } = req.params;
     collectionService
       .deleteCollection(req.app.get('db'), collectionId)
