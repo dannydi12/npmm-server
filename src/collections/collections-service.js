@@ -74,7 +74,6 @@ const collectionsService = {
     return {
       id: collection.id,
       collection_name: xss(collection.collection_name),
-      is_launchpad: collection.is_launchpad,
     };
   },
 };
