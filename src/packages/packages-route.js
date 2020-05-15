@@ -11,18 +11,17 @@ packagesRouter
     const { collectionId, name } = req.body;
 
     if ((!collectionId, !name)) {
-      return res.status(400).send({ error: 'missing required field' });
+      return res.status(400).json({ error: 'missing required field' });
     }
     if (!Number(collectionId)) {
-      return res.status(400).send({ error: 'invalid input' });
+      return res.status(400).json({ error: 'invalid input' });
     }
 
     packagesService
       .checkIfPackageExists(req.app.get('db'), collectionId, name)
       .then((pack) => {
-        console.log(pack);
         if (pack.length > 0) {
-          res.status(400).send('package exists');
+          return res.status(400).json({ error: 'package exists' });
         } else {
           packagesService
             .addPackage(req.app.get('db'), collectionId, name)

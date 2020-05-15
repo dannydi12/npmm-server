@@ -69,7 +69,9 @@ collectionRouter
       );
 
     let nameOfCollection;
-    collectionName().then((name) => (nameOfCollection = name.collection_name));
+    collectionName().then((name) =>
+      name ? (nameOfCollection = name.collection_name) : null
+    );
 
     collectionService
       .getPackagesByCollection(req.app.get('db'), collectionId)
@@ -109,7 +111,7 @@ collectionRouter
     collectionService
       .updateCollection(req.app.get('db'), collectionId, name)
       .then((collection) => {
-        res.status(200).json(collection);
+        return res.status(200).json(collection);
       })
       .catch(next);
   })
@@ -123,7 +125,7 @@ collectionRouter
     collectionService
       .deleteCollection(req.app.get('db'), collectionId)
       .then((result) => {
-        res.status(204).end();
+        return res.status(204).end();
       })
       .catch(next);
   });

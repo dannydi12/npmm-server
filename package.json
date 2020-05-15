@@ -5,7 +5,8 @@
   "main": "./src/app.js",
   "scripts": {
     "start": "node ./src/server.js",
-    "test": "mocha --require test/setup.js",
+    "mochatest": "mocha -t 7000 --require test/setup.js",
+    "test": "nyc --reporter=text --reporter=lcov --check-coverage --statements 60 --lines 60 npm run mochatest",
     "dev": "nodemon ./src/server.js",
     "migrate": "postgrator --config postgrator-config.js",
     "migrate:test": "env NODE_ENV=test npm run migrate",
@@ -39,6 +40,7 @@
     "eslint-plugin-prettier": "^3.1.3",
     "mocha": "^7.0.1",
     "nodemon": "^2.0.2",
+    "nyc": "^15.0.1",
     "prettier": "^2.0.5",
     "supertest": "^4.0.2"
   }
