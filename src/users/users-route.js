@@ -1,5 +1,6 @@
 const express = require('express');
 const usersService = require('./users-service');
+const collectionService = require('../collections/collections-service');
 const AuthService = require('../auth/auth-service');
 const bcrypt = require('bcryptjs');
 
@@ -16,10 +17,15 @@ usersRouter.route('/').post(jsonBodyParser, (req, res, next) => {
   let sub;
   let payload = { email: `${email}` };
 
+  let createNewUserCollection = function (userId) {
+    collectionService.addCollection(req.app.get('db'), 'npmm', userId);
+  };
+
   usersService
     .registerUser(req.app.get('db'), email, saltedPass)
     .then((idResponse) => {
       sub = `${idResponse}`;
+      createNewUserCollection(idResponse);
       res.status(200).send({ authToken: AuthService.createJwt(sub, payload) });
     })
     .catch(next);
