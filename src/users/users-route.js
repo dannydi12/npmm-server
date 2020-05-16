@@ -18,7 +18,7 @@ usersRouter.route('/').post(jsonBodyParser, (req, res, next) => {
   let payload = { email: `${email}` };
 
   let createNewUserCollection = function (userId) {
-    collectionService.addCollection(req.app.get('db'), 'npmm', userId);
+    collectionService.addCollection(req.app.get('db'), 'Favorites', userId);
   };
 
   usersService
