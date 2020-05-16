@@ -25,8 +25,18 @@ usersRouter.route('/').post(jsonBodyParser, (req, res, next) => {
     .registerUser(req.app.get('db'), email, saltedPass)
     .then((idResponse) => {
       sub = `${idResponse}`;
-      createNewUserCollection(idResponse);
-      res.status(200).send({ authToken: AuthService.createJwt(sub, payload) });
+      return collectionService
+        .addCollection(req.app.get('db'), 'Favorites', idResponse)
+        .then((added) => {
+          return res
+            .status(200)
+            .send({ authToken: AuthService.createJwt(sub, payload) });
+        });
+      // createNewUserCollection(idResponse).then((added) => {
+      //   res
+      //     .status(200)
+      //     .send({ authToken: AuthService.createJwt(sub, payload) });
+      // });
     })
     .catch(next);
 });
