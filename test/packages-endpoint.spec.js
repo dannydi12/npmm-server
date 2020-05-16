@@ -1,7 +1,8 @@
 const knex = require('knex');
 const app = require('../src/app');
+const assert = require('assert');
 
-describe('user registration', () => {
+describe('/api/packages', () => {
   let db;
 
   before('make knex instance', () => {
@@ -30,8 +31,8 @@ describe('user registration', () => {
     );
   });
 
-  //before create base collection . find a collection on a post . send in a collection
-  //underneath base user
+  let token =
+    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
 
   before('create base user', () => {
     return db.raw(
@@ -41,15 +42,44 @@ describe('user registration', () => {
     );
   });
 
-  describe('/api/packages', () => {
-    it('A successful get call should return all packages and a status 200', () => {
+  before('create a collection', () => {
+    return db.raw(
+      `INSERT INTO collections (user_id, collection_name)
+         VALUES
+         (1, 'test');`
+    );
+  });
+
+  before('populate collection', () => {
+    return db.raw(
+      `INSERT INTO packages (collection, name, version)
+         VALUES
+         (1, 'react', '0'),
+         (1, 'react-dom', '0');`
+    );
+  });
+
+  describe('POST /api/packages', () => {
+    it('return an object containing meta data relevant to packages', () => {
       let token =
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
 
+      const replica = { collectionId: 1, name: 1 };
+
       return supertest(app)
-        .get('/api/packages')
+        .post('/api/packages')
         .set('Authorization', token)
+        .send(replica)
         .expect(200);
+    });
+  });
+
+  describe('DELETE /api/packages', () => {
+    it('responds with status 204 on successful delete', () => {
+      return supertest(app)
+        .delete('/api/packages/1')
+        .set('Authorization', token)
+        .expect(204);
     });
   });
 });

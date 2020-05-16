@@ -1,5 +1,6 @@
 const knex = require('knex');
 const app = require('../src/app');
+const assert = require('assert');
 
 describe('user registration', () => {
   let db;
@@ -14,7 +15,7 @@ describe('user registration', () => {
 
   after('disconnect from db', () => db.destroy());
 
-  before('cleanup', () => {
+  beforeEach('cleanup', () => {
     return db.raw(
       `TRUNCATE
       users
@@ -30,10 +31,7 @@ describe('user registration', () => {
     );
   });
 
-  //before create base collection . find a collection on a post . send in a collection
-  //underneath base user
-
-  before('create base user', () => {
+  beforeEach('create base user', () => {
     return db.raw(
       `INSERT INTO users (email, password)
        VALUES
@@ -58,7 +56,6 @@ describe('user registration', () => {
 
       const testData = {
         name: 'testcollectionMATT',
-        isLaunchPad: false,
       };
 
       return supertest(app)
@@ -66,68 +63,64 @@ describe('user registration', () => {
         .set('Authorization', token)
         .send(testData)
         .expect((res) => {
-          res.body.id = 1;
-          res.body.user_id = 1;
-          res.body.collection_name = 'testcollectionMATT';
-          res.body.isLaunchPad = false;
+          assert.equal(res.body.id, 1);
+          assert.equal(res.body.user_id, 1);
+          assert.equal(res.body.collection_name, 'testcollectionMATT');
         })
         .expect(201);
     });
 
-    //get collections test
-
-    before('create base collection', () => {
-      return db.raw(
-        `INSERT INTO collections (user_id, collection_name, is_launchpad)
-      VALUES
-      (1, 'React Front', false);`
-      );
-    });
-
-    it('Get packages from a certain collection return 200', () => {
+    it('GET api/collection/:collectionid (no data) should return empty array', () => {
       let token =
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
+
+      before('create a collection', () => {
+        return db.raw(
+          `INSERT INTO collections (user_id, collection_name)
+             VALUES
+             (1, 'test collection');`
+        );
+      });
 
       return supertest(app)
-        .get('/api/collections')
-        .query({ collectionId: '1' })
+        .get('/api/collections/1')
         .set('Authorization', token)
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .then((res) => {
-          expect(res.body).to.be({ collectionId: '1' });
-        });
+        .expect(200);
     });
+  });
 
-    // delete collections test
+  it('PATCH api/collections/:collectionid responds with 200 and returns patched object', () => {
+    let token =
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
 
-    before('create base collection', () => {
+    before('create a collection', () => {
       return db.raw(
-        `INSERT INTO collections (user_id, collection_name, is_launchpad)
-      VALUES
-      (1, 'Deletion Test', false);`
+        `INSERT INTO collections (user_id, collection_name)
+             VALUES
+             (1, 'test collection');`
       );
     });
+    return supertest(app)
+      .patch('/api/collections/1')
+      .set('Authorization', token)
+      .send({ name: 'updatedName' })
+      .expect(200);
+  });
 
-    it('Deletes a package sends 204 response', () => {
-      let token =
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
+  it('DELETE api/collections/:collectionid responds with 204', () => {
+    let token =
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
 
-      // const testData = {
-      //   name: 'testcollectionMATT',
-      //   isLaunchPad: false,
-      // };
-
-      return (
-        supertest(app)
-          .post('/api/collections')
-          .query({ collectionId: '1' })
-          .set('Authorization', token)
-          .expect(204)
-          .expect('Content-Type', /json/)
-          // if {{collectionId} = 1} Can I write an if statement here checking against id = 1 only then delete
-          .deleteCollection(req.app.get('db'), { collectionId: 1 })
+    before('create a collection', () => {
+      return db.raw(
+        `INSERT INTO collections (user_id, collection_name)
+             VALUES
+             (1, 'test collection');`
       );
     });
+    return supertest(app)
+      .delete('/api/collections/1')
+      .set('Authorization', token)
+      .expect(204);
   });
 });

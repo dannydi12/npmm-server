@@ -2,8 +2,14 @@ const xss = require('xss');
 const fetch = require('node-fetch');
 
 const collectionsService = {
-  getAllCollections(db, id, type = null) {
+  getAllCollections(db, id) {
     return db('collections').where({ user_id: id });
+  },
+
+  checkIfCollectionExists(db, id, name) {
+    return db('collections')
+      .where({ user_id: id, collection_name: name })
+      .returning('*');
   },
 
   getPackagesByCollection(db, collectionId) {
@@ -20,12 +26,11 @@ const collectionsService = {
       .then((row) => row[0]);
   },
 
-  updateCollection(db, id, name, isLaunchPad) {
+  updateCollection(db, id, name) {
     return db('collections')
       .where({ id })
       .update({
         collection_name: name,
-        is_launchpad: isLaunchPad,
       })
       .returning('*')
       .then((row) => row[0]);
@@ -52,6 +57,7 @@ const collectionsService = {
                 name,
                 description: resJSON[name].collected.metadata.description,
                 links: resJSON[name].collected.metadata.links,
+                version: resJSON[name].collected.metadata.version
               },
               score: resJSON[name].score,
             };
@@ -75,7 +81,6 @@ const collectionsService = {
     return {
       id: collection.id,
       collection_name: xss(collection.collection_name),
-      is_launchpad: collection.is_launchpad,
     };
   },
 };
