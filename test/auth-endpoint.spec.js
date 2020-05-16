@@ -1,5 +1,6 @@
 const knex = require('knex');
 const app = require('../src/app');
+const assert = require('assert');
 
 describe('Auth login', () => {
   let db;
@@ -48,10 +49,41 @@ describe('Auth login', () => {
       return supertest(app)
         .post('/api/auth/login')
         .send(goodLoginData)
-        .expect((res) => {
-          expect(res.body['authToken']);
-        })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
         .expect(200);
+    });
+
+    it('When missing either the email or password it returns a 400', () => {
+      const incompleteLoginData = {
+        email: 'demo@demo.com',
+      };
+      return supertest(app)
+        .post('/api/auth/login')
+        .send(incompleteLoginData)
+        .expect(400);
+    });
+
+    it('Responds with a 400 when presented a bad email', () => {
+      const badEmailData = {
+        email: 'demoo@demo.com',
+        password: 'demopassword',
+      };
+      return supertest(app)
+        .post('/api/auth/login')
+        .send(badEmailData)
+        .expect(400);
+    });
+
+    it('Responds with a 400 when presented a bad password', () => {
+      const badPassData = {
+        email: 'demo@demo.com',
+        password: 'demoDinga',
+      };
+      return supertest(app)
+        .post('/api/auth/login')
+        .send(badPassData)
+        .expect(400);
     });
   });
 });
