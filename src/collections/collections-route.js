@@ -47,7 +47,7 @@ collectionRouter
   .route('/:collectionId')
   .all(requireAuth)
   .get((req, res, next) => {
-    const { justNames, limited } = req.query;
+    const { justNames, offset } = req.query;
     const { collectionId } = req.params;
 
     if (!Number(collectionId)) {
@@ -74,7 +74,7 @@ collectionRouter
     );
 
     collectionService
-      .getPackagesByCollection(req.app.get('db'), collectionId)
+      .getPackagesByCollection(req.app.get('db'), collectionId, offset)
       .then((collection) => {
         const names = collection.map((set) => set.name);
         const ids = collection.map((set) => set.id);

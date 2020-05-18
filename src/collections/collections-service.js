@@ -12,10 +12,12 @@ const collectionsService = {
       .returning('*');
   },
 
-  getPackagesByCollection(db, collectionId) {
+  getPackagesByCollection(db, collectionId, offset = 0) {
     return db('packages')
       .where({ collection: collectionId })
-      .orderBy('id', 'desc');
+      .orderBy('id', 'desc')
+      .limit(25)
+      .offset(offset);
   },
 
   cleanCollection(collection) {
