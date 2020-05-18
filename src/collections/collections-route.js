@@ -54,6 +54,10 @@ collectionRouter
       return res.status(400).send({ error: 'invalid query' });
     }
 
+    if (offset && !Number(offset)) {
+      return res.status(400).send({ error: 'invalid query' });
+    }
+
     if (justNames === 'true') {
       return collectionService
         .getPackagesByCollection(req.app.get('db'), collectionId)
