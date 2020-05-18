@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 
 const collectionsService = {
   getAllCollections(db, id) {
-    return db('collections').where({ user_id: id });
+    return db('collections').where({ user_id: id }).orderBy('id', 'asc');
   },
 
   checkIfCollectionExists(db, id, name) {
@@ -13,7 +13,9 @@ const collectionsService = {
   },
 
   getPackagesByCollection(db, collectionId) {
-    return db('packages').where({ collection: collectionId });
+    return db('packages')
+      .where({ collection: collectionId })
+      .orderBy('id', 'desc');
   },
 
   cleanCollection(collection) {
@@ -57,7 +59,7 @@ const collectionsService = {
                 name,
                 description: resJSON[name].collected.metadata.description,
                 links: resJSON[name].collected.metadata.links,
-                version: resJSON[name].collected.metadata.version
+                version: resJSON[name].collected.metadata.version,
               },
               score: resJSON[name].score,
             };

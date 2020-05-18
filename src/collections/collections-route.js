@@ -47,7 +47,7 @@ collectionRouter
   .route('/:collectionId')
   .all(requireAuth)
   .get((req, res, next) => {
-    const { justNames } = req.query;
+    const { justNames, limited } = req.query;
     const { collectionId } = req.params;
 
     if (!Number(collectionId)) {
