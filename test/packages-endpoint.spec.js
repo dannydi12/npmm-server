@@ -64,12 +64,20 @@ describe('/api/packages', () => {
       let token =
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
 
-      const replica = { collectionId: 1, name: 1 };
+      const replica = { collectionId: 1, name: 'Test Package' };
 
       return supertest(app)
         .post('/api/packages')
         .set('Authorization', token)
         .send(replica)
+        .expect((res) =>
+          assert.deepEqual(res.body, {
+            id: 3,
+            collection: 1,
+            name: 'Test Package',
+            version: null,
+          })
+        )
         .expect(200);
     });
   });
