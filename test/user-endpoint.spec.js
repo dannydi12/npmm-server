@@ -1,5 +1,6 @@
 const knex = require('knex');
 const app = require('../src/app');
+const assert = require('assert');
 
 describe('user registration', () => {
   let db;
@@ -40,10 +41,17 @@ describe('user registration', () => {
       return supertest(app)
         .post('/api/users')
         .send(newUserData)
-        .expect((res) => {
-          expect(res.body['authToken']);
-        })
-        .expect(200);
+        .expect(200)
+        .then((res) => {
+          assert.equal(Object.keys(res.body), 'authToken');
+        });
+    });
+    it('If the request body comes in without an email or password a 400 status should be returned', () => {
+      const newUserData = {
+        email: 'dan@demo.com',
+      };
+
+      return supertest(app).post('/api/users').send(newUserData).expect(400);
     });
   });
 });

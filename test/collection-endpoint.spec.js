@@ -2,7 +2,7 @@ const knex = require('knex');
 const app = require('../src/app');
 const assert = require('assert');
 
-describe('user registration', () => {
+describe('Collections-endpoint', () => {
   let db;
 
   before('make knex instance', () => {
@@ -18,14 +18,8 @@ describe('user registration', () => {
   before('cleanup', () => {
     return db.raw(
       `TRUNCATE
-      users
-      RESTART IDENTITY CASCADE;
-    
-    TRUNCATE  
-      collections
-      RESTART IDENTITY CASCADE;
-    
-    TRUNCATE
+      users,
+      collections,
       packages
       RESTART IDENTITY CASCADE;`
     );
@@ -44,10 +38,22 @@ describe('user registration', () => {
       return db.raw(
         `INSERT INTO collections (user_id, collection_name)
         VALUES
-        (1, 'Test');`
+        (1, 'Test'),
+        (1, 'Test v2');`
       );
     });
+    it('A post sent to collection with a duplicate name should return a 400', () => {
+      let token =
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
 
+      const testData = { name: 'Test' };
+
+      return supertest(app)
+        .post('/api/collections')
+        .set('Authorization', token)
+        .send(testData)
+        .expect(400);
+    });
     it('A successful get call should return all users collections and a status 200', () => {
       let token =
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
@@ -71,7 +77,7 @@ describe('user registration', () => {
         .set('Authorization', token)
         .send(testData)
         .expect((res) => {
-          assert.equal(res.body.id, 2);
+          assert.equal(res.body.id, 3);
           assert.equal(res.body.user_id, 1);
           assert.equal(res.body.collection_name, 'testcollectionMATT');
         })
@@ -83,11 +89,11 @@ describe('user registration', () => {
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
 
       return supertest(app)
-        .get('/api/collections/1')
+        .get('/api/collections/3')
         .set('Authorization', token)
         .expect((res) => {
-          assert.equal(res.body.name, 'Test');
-          assert.deepEqual(res.body, { name: 'Test', packs: [] });
+          assert.equal(res.body.name, 'testcollectionMATT');
+          assert.deepEqual(res.body, { name: 'testcollectionMATT', packs: [] });
         })
         .expect(200);
     });
@@ -112,5 +118,39 @@ describe('user registration', () => {
       .delete('/api/collections/1')
       .set('Authorization', token)
       .expect(204);
+  });
+
+  it('A post sent to collections without a name in the body should return a status 400', () => {
+    let token =
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
+
+    const testData = {};
+
+    return supertest(app)
+      .post('/api/collections')
+      .set('Authorization', token)
+      .send(testData)
+      .expect(400);
+  });
+  it('A non integer collection id throws a 400 status', () => {
+    let token =
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
+
+    const testData = {};
+
+    return supertest(app)
+      .get('/api/collections/hey')
+      .set('Authorization', token)
+      .send(testData)
+      .expect(400);
+  });
+  it('returns just the names when presented with query justNames', () => {
+    let token =
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
+
+    return supertest(app)
+      .get('/api/collections/1?justNames=true')
+      .set('Authorization', token)
+      .expect(200);
   });
 });
