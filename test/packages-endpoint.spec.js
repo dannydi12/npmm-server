@@ -80,6 +80,42 @@ describe('/api/packages', () => {
         )
         .expect(200);
     });
+    it('returns 400 when the collectionId is not a number', () => {
+      let token =
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
+
+      const badData = { collectionId: 'hey', name: 'Test Package' };
+
+      return supertest(app)
+        .post('/api/packages')
+        .set('Authorization', token)
+        .send(badData)
+        .expect(400);
+    });
+    it('returns 400 when missing either name or collectionId from the request body', () => {
+      let token =
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
+
+      const badData = { collectionId: 1 };
+
+      return supertest(app)
+        .post('/api/packages')
+        .set('Authorization', token)
+        .send(badData)
+        .expect(400);
+    });
+    it('returns 400 when attempting to add a pre-existing package', () => {
+      let token =
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
+
+      const badData = { collectionId: 1, name: 'react' };
+
+      return supertest(app)
+        .post('/api/packages')
+        .set('Authorization', token)
+        .send(badData)
+        .expect(400);
+    });
   });
 
   describe('DELETE /api/packages', () => {
@@ -88,6 +124,12 @@ describe('/api/packages', () => {
         .delete('/api/packages/1')
         .set('Authorization', token)
         .expect(204);
+    });
+    it('responds with status 400 if the request params contain a non numeric id', () => {
+      return supertest(app)
+        .delete('/api/packages/hey')
+        .set('Authorization', token)
+        .expect(400);
     });
   });
 });
