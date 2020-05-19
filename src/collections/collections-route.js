@@ -61,7 +61,7 @@ collectionRouter
 
     if (justNames === 'true') {
       return collectionService
-        .getPackagesByCollection(req.app.get('db'), collectionId)
+        .getPackagesByCollection(req.app.get('db'), collectionId, false)
         .then((packs) => {
           return res.json(packs);
         });

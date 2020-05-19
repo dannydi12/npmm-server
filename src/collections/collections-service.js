@@ -13,11 +13,17 @@ const collectionsService = {
   },
 
   getPackagesByCollection(db, collectionId, offset = 0) {
-    return db('packages')
-      .where({ collection: collectionId })
-      .orderBy('id', 'desc')
-      .limit(25)
-      .offset(offset);
+    if (!offset) {
+      return db('packages')
+        .where({ collection: collectionId })
+        .orderBy('id', 'desc');
+    } else {
+      return db('packages')
+        .where({ collection: collectionId })
+        .orderBy('id', 'desc')
+        .limit(25)
+        .offset(offset);
+    }
   },
 
   cleanCollection(collection) {
