@@ -5,6 +5,7 @@
   "main": "./src/app.js",
   "scripts": {
     "start": "node ./src/server.js",
+    "cluster": "pm2 start ./src/server.js -i max",
     "mochatest": "mocha -t 7000 --require test/setup.js",
     "test": "nyc --reporter=text --reporter=lcov --check-coverage --statements 60 --lines 60 npm run mochatest",
     "dev": "nodemon ./src/server.js",
@@ -28,6 +29,7 @@
     "morgan": "^1.9.1",
     "node-fetch": "^2.6.0",
     "pg": "^8.0.3",
+    "pm2": "^4.4.0",
     "postgrator-cli": "^3.3.0",
     "xss": "^1.0.6"
   },
