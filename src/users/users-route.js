@@ -20,6 +20,9 @@ usersRouter.route('/').post(jsonBodyParser, (req, res, next) => {
   usersService
     .registerUser(req.app.get('db'), email, saltedPass)
     .then((idResponse) => {
+      if (!idResponse) {
+        return res.status(400).json({ error: 'issue with creating new user' });
+      }
       sub = `${idResponse}`;
       return collectionService
         .addCollection(req.app.get('db'), 'Favorites', idResponse)
@@ -29,7 +32,7 @@ usersRouter.route('/').post(jsonBodyParser, (req, res, next) => {
             .send({ authToken: AuthService.createJwt(sub, payload) });
         });
     })
-    .catch(res.status(404).json({ error: 'failed at signup' }), next);
+    .catch(next);
 });
 
 module.exports = usersRouter;
