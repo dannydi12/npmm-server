@@ -29,7 +29,7 @@ usersRouter.route('/').post(jsonBodyParser, (req, res, next) => {
             .send({ authToken: AuthService.createJwt(sub, payload) });
         });
     })
-    .catch(next);
+    .catch(res.status(404).json({ error: 'failed at signup' }), next);
 });
 
 module.exports = usersRouter;
