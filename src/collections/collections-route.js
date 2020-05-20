@@ -69,7 +69,8 @@ collectionRouter
         .getPackagesByCollection(req.app.get('db'), collectionId, false)
         .then((packs) => {
           return res.json(packs);
-        });
+        })
+        .catch(next);
     }
 
     let collectionName = async () =>
@@ -88,19 +89,22 @@ collectionRouter
       .then((collection) => {
         const names = collection.map((set) => set.name);
         const ids = collection.map((set) => set.id);
-
-        collectionService.npmsAPI(names).then((data) => {
-          for (let i in data) {
-            data[i]['id'] = ids[i];
-          }
-          return res.json({
-            name: nameOfCollection,
-            packs: data.filter((element) => element != null),
-          });
-        });
-      })
-      .catch(next);
+        collectionService
+          .npmsAPI(names)
+          .then((data) => {
+            for (let i in data) {
+              data[i]['id'] = ids[i];
+            }
+            Promise.reject();
+            return res.json({
+              name: nameOfCollection,
+              packs: data.filter((element) => element != null),
+            });
+          })
+          .catch(next);
+      });
   })
+
   .patch(jsonBodyParser, (req, res, next) => {
     const { collectionId } = req.params;
     let { name } = req.body;
