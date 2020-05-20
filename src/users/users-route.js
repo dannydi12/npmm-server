@@ -1,6 +1,7 @@
 const express = require('express');
 const usersService = require('./users-service');
 const collectionService = require('../collections/collections-service');
+const packageService = require('../packages/packages-service');
 const AuthService = require('../auth/auth-service');
 const bcrypt = require('bcryptjs');
 
@@ -27,6 +28,13 @@ usersRouter.route('/').post(jsonBodyParser, (req, res, next) => {
       return collectionService
         .addCollection(req.app.get('db'), 'Favorites', idResponse)
         .then((added) => {
+          return packageService.addPackage(
+            req.app.get('db'),
+            1,
+            '@npmmjs/npmm'
+          );
+        })
+        .then((addedPackage) => {
           return res
             .status(200)
             .send({ authToken: AuthService.createJwt(sub, payload) });
