@@ -3,7 +3,6 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
-const compression = require('compresssion');
 const { NODE_ENV } = require('../config');
 const authRoute = require('./auth/auth-router');
 const collectionsRoute = require('./collections/collections-route');
@@ -17,7 +16,6 @@ const morganOption = NODE_ENV === 'production' ? 'tiny' : 'common';
 app.use(morgan(morganOption));
 app.use(helmet());
 app.use(cors());
-app.use(compression());
 app.use((error, req, res, next) => {
   let response;
   if (NODE_ENV === 'production') {
