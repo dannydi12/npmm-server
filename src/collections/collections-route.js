@@ -9,6 +9,9 @@ collectionRouter
   .route('/')
   .all(requireAuth)
   .get((req, res, next) => {
+    if (req.url !== '/') {
+      return res.status(400).json({ error: 'NO PARAMS HERE' });
+    }
     collectionService
       .getAllCollections(req.app.get('db'), req.payload.sub)
       .then((all_collections) => {
@@ -54,7 +57,6 @@ collectionRouter
   .get((req, res, next) => {
     const { justNames, offset } = req.query;
     const { collectionId } = req.params;
-
     if (!Number(collectionId)) {
       return res.status(400).send({ error: 'invalid query' });
     }
