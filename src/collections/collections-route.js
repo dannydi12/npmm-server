@@ -90,6 +90,9 @@ collectionRouter
         const ids = collection.map((set) => set.id);
 
         collectionService.npmsAPI(names).then((data) => {
+          if (data.length === 0) {
+            return res.json({ name: nameOfCollection, packs: [] });
+          }
           for (let i in data) {
             data[i]['id'] = ids[i];
           }
