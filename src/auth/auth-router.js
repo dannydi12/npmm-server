@@ -8,6 +8,12 @@ authRouter.post('/login', jsonBodyParser, (req, res, next) => {
   const { email, password } = req.body;
   const loginuser = { email, password };
 
+  if (
+    !new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(email)
+  ) {
+    return res.status(400).json({ error: 'invalid email format' });
+  }
+
   for (const [key, value] of Object.entries(loginuser))
     if (value == null)
       return res.status(400).json({
