@@ -20,6 +20,9 @@ usersRouter.route('/').post(jsonBodyParser, (req, res, next) => {
   usersService
     .registerUser(req.app.get('db'), email, saltedPass)
     .then((idResponse) => {
+      if (!idResponse) {
+        return res.status(400).json({ error: 'issue with creating new user' });
+      }
       sub = `${idResponse}`;
       return collectionService
         .addCollection(req.app.get('db'), 'Favorites', idResponse)
