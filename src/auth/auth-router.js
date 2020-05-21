@@ -20,6 +20,8 @@ authRouter.post('/login', jsonBodyParser, (req, res, next) => {
         error: `Missing ${key} in request body`,
       });
 
+  loginuser.email = loginuser.email.toLowerCase();
+
   AuthService.getUserWithUserName(req.app.get('db'), loginuser.email)
     .then((dbUser) => {
       if (!dbUser) {
