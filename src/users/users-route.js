@@ -30,7 +30,7 @@ usersRouter.route('/').post(jsonBodyParser, (req, res, next) => {
         .then((added) => {
           return packageService.addPackage(
             req.app.get('db'),
-            1,
+            added.id,
             '@npmmjs/npmm'
           );
         })
