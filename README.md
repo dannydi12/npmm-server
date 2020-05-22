@@ -1,67 +1,102 @@
-<img src="logo" width="15%">
+# NPMM Server
 
-# NPMM - Node Package Manager Manager
+[![CodeFactor](https://www.codefactor.io/repository/github/dannydi12/npmm-server/badge)](https://www.codefactor.io/repository/github/dannydi12/npmm-server)
 
-## Live App: [NPMM](http://)
+ThoughtBin allows users to anonymously share and create content on a simple and frictionless micro-platform. Think of it as a privacy-centric Twitter with a hint of 4Chan. A live demo can be found at [https://npmm.dev/](https://npmm.dev/)
 
-<p float="left"><img src="mobile screenshot 1" width="20%">  <img src="mobile screenshot 2" width="20%"> <img src="mobile screenshot 3" width="20%"> <img src="mobile screenshot 4" width="20%"></p>
+## Summary
 
-## Description
+This API provides the means to create, read, update, and delete thoughts as a user on Thoughtbin.
 
-NPMM is an app that...
+## Motivation
 
-## Notes on Current Features
+I wanted a social media network where I didn't have to worry about followers, likes, or reputation. I felt there was a need to create something that respected the user and fostered a safe space for self-expression. Soon after, the idea of ThoughtBin was born.
 
-- The app...
+ThoughtBin's basic principles:
 
-## Features to Come
+- Disseminating information shouldn’t be difficult
+- Publishing new information should not require you to surrender your identity
+- Access to information should not be gated by identification
+- Every internet user should have the ability to _anonymously_ share/create content; _pseudonymity_ is not acceptable.
 
-- A way for users to...
+By design, ThoughtBin only stores a single token in Local Storage to authenticate and fetch your personal thoughts. No trackers, no cookies, nothing else.
 
-## Getting Started
+## NPMM CLI
 
-- Install dependencies: `npm install`
-- Create development and test databases: `createdb npmm`, `createdb npmm-test`
-- Create database user: `createuser npmm`
-- Grant privileges to new user in `psql`:
-  - `GRANT ALL PRIVILEGES ON DATABASE npmm TO npmm`
-  - `GRANT ALL PRIVILEGES ON DATABASE npmm-test TO npmm`
-- Prepare environment file: `cp example.env .env`
-- Replace values in `.env` with your custom values.
-- Bootstrap development database: `npm run migrate`
-- Bootstrap test database: `npm run migrate:test`
+Make sure to check out our companion CLI that allows you to install your collections from NPMM in your local project: [NPMM CLI](https://github.com/maleckim/npmm-cli).
 
-## Sample Data
+## Installation
 
-- To seed the database for development: `psql -U npmm -d npmm -a -f seeds/seed.npmm_tables.sql`
-- To clear seed data: `psql -U npmm -d npmm -a -f seeds/trunc.npmm_tables.sql`
+#### `npm install`
 
-## Scripts
+Installs all the required dependencies. Run this before anything else.
 
-- Start application for development: `npm run dev`
-- Run tests: `npm test`
+#### `npm run migrate`
+
+Uses postgrator to create required tables. Create a database and edit `postgrator-config.js` before running this command.
+
+#### `npm run dev`
+
+Runs the app in the development mode.
+
+#### `npm test`
+
+Launches Mocha.
+
+#### `npm start`
+
+Launches the server at the port specified in your `.env` file.
+
+## Configuration
+
+Make sure to go to `[npmm-folder-name]/example.env` , rename it to `.env`, and then enter your configuration details (port, Postgres database URL, etc)
+
+**The front-end repository can be found [here](https://github.com/dannydi12/npmm-client).**
+
+## Usage
+
+### Open Endpoints
+
+Open endpoints require no authentication.
+
+- [Get Token](docs/token.md) : `POST /token` - Get a token for subsequent authorized requests
+- [Get Thoughts](docs/thoughts/get.md) : `GET /thoughts/` - Get 10 thoughts at any given index
+
+### Endpoints that require Authentication
+
+Basic CRUD operations in regard to thoughts.
+
+- [Create A Thought](docs/thoughts/post.md) : `POST /thoughts/`
+- [Get A Thought](docs/thoughts/id/get.md) : `GET /thoughts/:id`
+- [Update A Thought](docs/thoughts/id/patch.md) : `PATCH /thoughts/:id`
+- [Delete A Thought](docs/thoughts/id/delete.md) : `DELETE /thoughts/:id`
 
 ## Built With
 
-[PostgreSQL](https://www.postgresql.org/)
+#### Back-end:
 
-[Express](https://expressjs.com/)
+- Node
+- PostgreSQL
+- Knex
+- JSON Web Token
+- Express
+- Mocha, and Chai
+- Deployed with Heroku
 
-[React](https://reactjs.org/)
+#### Front-end:
 
-[Node](https://nodejs.org/en/)
+- React
+- HTML5
+- CSS3
+- Javascript
+- JSON Web Token
+- Redux
+- Jest
+- Deployed with Zeit
 
-HTML 5
+## Demo
 
-CSS 3
-
-Javascript
-
-[Mocha](https://mochajs.org/)
-
-[Chai](https://www.chaijs.com/)
-
-[Knex](http://knexjs.org/)
+- [Live Demo](https://npmm.dev/)
 
 ## Authors
 
