@@ -27,7 +27,7 @@ collectionRouter
     const user_id = req.payload.sub;
 
     if (!name) {
-      return res.status(400).json({ error: 'missing required field' });
+      return res.status(400).json({ error: 'missing required content' });
     }
     if (name.trim().length === 0) {
       return res.status(400).json({ error: 'empty string in request body' });
