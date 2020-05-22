@@ -109,7 +109,7 @@ collectionRouter
     }
 
     if (!name) {
-      return res.status(400).send({ error: 'missing required field' });
+      return res.status(400).send({ error: 'missing content in request body' });
     }
 
     if (name.length === 0) {

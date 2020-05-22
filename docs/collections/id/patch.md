@@ -1,27 +1,28 @@
-# Update A Thought
+# Update A Collection
 
-Update the thought of the authenticated user if they are owner.
+Update the Collection Name
 
 **URL** : `/thoughts/:id`
 
-**URL Parameters** : 
-* `id=[integer]` where `id` is the ID of the thought to update.
+**URL Parameters** :
+
+- `id=[integer]` where `id` is the ID of the Collection to edit.
 
 **Method** : `PATCH`
 
 **Auth required** : YES
 
-**Required Headers** : 
-* `Authorization` : `Bearer [token from /token]`
+**Required Headers** :
 
-**Permissions required** : User is owner of that thought
+- `Authorization` : `Bearer [token from /token]`
+
+**Permissions required** : User is validated
 
 **Data constraints**
 
 ```json
 {
-    "userId": "[string that matches the user ID in your JWT]",
-    "content": "[string between 3 and 400 characters]"
+  "name": "[The name the collection will be updated to]"
 }
 ```
 
@@ -29,35 +30,41 @@ Update the thought of the authenticated user if they are owner.
 
 ```json
 {
-  "userId": "8b5f97ac-9dad-4f35-bf00-37a193aae76c",
-  "content": "Dogs reached space before humans."
+  "name": "updated name"
 }
 ```
 
 ## Success Response
 
-**Condition** : If the thought exists and the user is the owner.
+**Condition** : If the collection exists and user is validated.
 
 **Code** : `200 OK`
 
-**Content** : 
+**Content** :
 
 ```json
 {
   "id": 12898,
-  "user_id": "8b5f97ac-9dad-4f35-bf00-37a193aae76c",
-  "content": "Dogs reached space before humans.",
-  "created_at": "2020-04-04T15:39:28.763Z"
+  "user_id": 12,
+  "name": "updated name"
 }
 ```
 
 ## Error Responses
 
-**Condition** : If there was no content key in the request body.
+**Condition** : If there was no name key in the request body.
 
 **Code** : `400 BAD REQUEST`
 
-**Content** : `Thought must contain content`
+**Content** : `Missing content in request body`
+
+### Or
+
+**Condition** : Request has an empty string.
+
+**Code** : `400 BAD REQUEST`
+
+**Content** : `Empty String in request body`
 
 ### Or
 
@@ -74,4 +81,3 @@ Update the thought of the authenticated user if they are owner.
 **Code** : `401 UNAUTHORIZED`
 
 **Content** : `No token provided`
-
