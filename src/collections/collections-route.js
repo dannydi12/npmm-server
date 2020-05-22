@@ -33,25 +33,20 @@ collectionRouter
       return res.status(400).json({ error: 'empty string in request body' });
     }
 
-    let collectionTest = async () => {
-      const check = await collectionService.checkIfCollectionExists(
-        req.app.get('db'),
-        user_id,
-        name
-      );
-
-      if (check.length > 0) {
-        return res.status(400).end();
-      } else {
-        collectionService
-          .addCollection(req.app.get('db'), name, user_id)
-          .then((collection) => {
-            return res.status(201).json(collection);
-          })
-          .catch(next);
-      }
-    };
-    collectionTest();
+    collectionService
+      .checkIfCollectionExists(req.app.get('db'), user_id, name)
+      .then((check) => {
+        if (check.length > 0) {
+          return res.status(400).end();
+        } else {
+          collectionService
+            .addCollection(req.app.get('db'), name, user_id)
+            .then((collection) => {
+              return res.status(201).json(collection);
+            })
+            .catch(next);
+        }
+      });
   });
 
 collectionRouter
