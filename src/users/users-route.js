@@ -28,16 +28,13 @@ usersRouter.route('/').post(jsonBodyParser, (req, res, next) => {
       return collectionService
         .addCollection(req.app.get('db'), 'Favorites', idResponse)
         .then((added) => {
-          return packageService.addPackage(
-            req.app.get('db'),
-            added.id,
-            '@npmmjs/npmm'
-          );
-        })
-        .then((addedPackage) => {
-          return res
-            .status(200)
-            .send({ authToken: AuthService.createJwt(sub, payload) });
+          return packageService
+            .addPackage(req.app.get('db'), added.id, '@npmmjs/npmm')
+            .then((addedPackage) => {
+              return res
+                .status(200)
+                .send({ authToken: AuthService.createJwt(sub, payload) });
+            });
         });
     })
     .catch(next);
