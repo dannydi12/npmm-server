@@ -68,6 +68,8 @@ Basic CRUD operations in regard to collections.
 
 - [Get User Collections](docs/collections/get.md) : `GET /collections`
 - [Create a User Collection](docs/collections/post.md) : `POST /collections`
+- [Update a User Collection](docs/collections/id/patch.md) : `PATCH /collections/:id`
+- [Delete a User Collection](docs/collections/)
 - [Create A Thought](docs/thoughts/post.md) : `POST /thoughts/`
 - [Get A Thought](docs/thoughts/id/get.md) : `GET /thoughts/:id`
 - [Update A Thought](docs/thoughts/id/patch.md) : `PATCH /thoughts/:id`

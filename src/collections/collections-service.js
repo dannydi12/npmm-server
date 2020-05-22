@@ -16,7 +16,9 @@ const collectionsService = {
     if (!offset) {
       return db('packages')
         .where({ collection: collectionId })
-        .orderBy('id', 'desc');
+        .orderBy('id', 'desc')
+        .limit(25)
+        .offset(25);
     } else {
       return db('packages')
         .where({ collection: collectionId })
