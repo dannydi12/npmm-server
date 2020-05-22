@@ -1,40 +1,34 @@
-# Delete User's Thought
+# Delete User's Collection
 
-Delete the thought of the authenticated user if they are owner.
+Delete a users collection
 
-**URL** : `/thoughts/:id`
+**URL** : `/collections/:id`
 
-**URL Parameters** : 
-* `id=[integer]` where `id` is the ID of the thought to delete.
+**URL Parameters** :
+
+- `id=[integer]` where `id` is the ID of the collection to delete.
 
 **Method** : `DELETE`
 
 **Auth required** : YES
 
-**Required Headers** : 
-* `Authorization` : `Bearer [token from /token]`
+**Required Headers** :
 
-**Permissions required** : User is owner of that thought
+- `Authorization` : `Bearer [token from /token]`
+
+**Permissions required** : User is validated
 
 **Data** : `{}`
 
 ## Success Response
 
-**Condition** : If the thought exists and the user is the owner.
+**Condition** : If the collection exists and the user is validated.
 
 **Code** : `204 NO CONTENT`
 
 **Content** : `{}`
 
 ## Error Responses
-
-**Condition** : If there was no thought available to delete.
-
-**Code** : `404 NOT FOUND`
-
-**Content** : `That thought doesn't exist`
-
-### Or
 
 **Condition** : Authorized user is not owner of the thought.
 
