@@ -6,20 +6,9 @@ ThoughtBin allows users to anonymously share and create content on a simple and 
 
 ## Summary
 
-This API provides the means to create, read, update, and delete thoughts as a user on Thoughtbin.
+This API provides the means to create, delete, and update collections and with those collections you can add npm packages.
 
 ## Motivation
-
-I wanted a social media network where I didn't have to worry about followers, likes, or reputation. I felt there was a need to create something that respected the user and fostered a safe space for self-expression. Soon after, the idea of ThoughtBin was born.
-
-ThoughtBin's basic principles:
-
-- Disseminating information shouldn’t be difficult
-- Publishing new information should not require you to surrender your identity
-- Access to information should not be gated by identification
-- Every internet user should have the ability to _anonymously_ share/create content; _pseudonymity_ is not acceptable.
-
-By design, ThoughtBin only stores a single token in Local Storage to authenticate and fetch your personal thoughts. No trackers, no cookies, nothing else.
 
 ## NPMM CLI
 
