@@ -38,14 +38,14 @@ collectionRouter
       .then((check) => {
         if (check.length > 0) {
           return res.status(400).end();
-        } else {
+        } 
           collectionService
             .addCollection(req.app.get('db'), name, user_id)
             .then((collection) => {
               return res.status(201).json(collection);
             })
             .catch(next);
-        }
+        
       });
   });
 
@@ -67,7 +67,7 @@ collectionRouter
         });
     }
 
-    let collectionName = async () =>
+    const collectionName = async () =>
       await collectionService.getCollectionName(
         req.app.get('db'),
         collectionId
@@ -88,8 +88,8 @@ collectionRouter
           if (data.length === 0) {
             return res.json({ name: nameOfCollection, packs: [] });
           }
-          for (let i in data) {
-            data[i]['id'] = ids[i];
+          for (const i in data) {
+            data[i].id = ids[i];
           }
           return res.json({
             name: nameOfCollection,

@@ -1,6 +1,6 @@
 const knex = require('knex');
-const app = require('../src/app');
 const assert = require('assert');
+const app = require('../src/app');
 
 describe('Auth login', () => {
   let db;

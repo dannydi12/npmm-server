@@ -1,6 +1,6 @@
 const knex = require('knex');
-const app = require('../src/app');
 const assert = require('assert');
+const app = require('../src/app');
 
 describe('Collections-endpoint', () => {
   let db;
@@ -43,7 +43,7 @@ describe('Collections-endpoint', () => {
       );
     });
     it('A post sent to collection with a duplicate name should return a 400', () => {
-      let token =
+      const token =
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
 
       const testData = { name: 'Test' };
@@ -55,7 +55,7 @@ describe('Collections-endpoint', () => {
         .expect(400);
     });
     it('A successful get call should return all users collections and a status 200', () => {
-      let token =
+      const token =
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
 
       return supertest(app)
@@ -65,7 +65,7 @@ describe('Collections-endpoint', () => {
     });
 
     it('A succesful post should return the newly created object and a status 201', () => {
-      let token =
+      const token =
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
 
       const testData = {
@@ -85,7 +85,7 @@ describe('Collections-endpoint', () => {
     });
 
     it('GET api/collection/:collectionid should return a specific collection', () => {
-      let token =
+      const token =
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
 
       return supertest(app)
@@ -100,7 +100,7 @@ describe('Collections-endpoint', () => {
   });
 
   it('PATCH api/collections/:collectionid responds with 200 and returns patched object', () => {
-    let token =
+    const token =
       'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
 
     return supertest(app)
@@ -111,7 +111,7 @@ describe('Collections-endpoint', () => {
   });
 
   it('DELETE api/collections/:collectionid responds with 204', () => {
-    let token =
+    const token =
       'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
 
     return supertest(app)
@@ -121,7 +121,7 @@ describe('Collections-endpoint', () => {
   });
 
   it('A post sent to collections without a name in the body should return a status 400', () => {
-    let token =
+    const token =
       'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
 
     const testData = {};
@@ -133,7 +133,7 @@ describe('Collections-endpoint', () => {
       .expect(400);
   });
   it('A non integer collection id throws a 400 status', () => {
-    let token =
+    const token =
       'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
 
     const testData = {};
@@ -145,7 +145,7 @@ describe('Collections-endpoint', () => {
       .expect(400);
   });
   it('returns just the names when presented with query justNames', () => {
-    let token =
+    const token =
       'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
 
     return supertest(app)
