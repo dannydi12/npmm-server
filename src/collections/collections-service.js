@@ -13,19 +13,17 @@ const collectionsService = {
   },
 
   getPackagesByCollection(db, collectionId, offset = 0) {
-    if (!offset) {
-      return db('packages')
-        .where({ collection: collectionId })
-        .orderBy('id', 'desc')
-        .limit(25)
-        .offset(25);
-    } else {
-      return db('packages')
-        .where({ collection: collectionId })
-        .orderBy('id', 'desc')
-        .limit(25)
-        .offset(offset);
-    }
+    return db('packages')
+      .where({ collection: collectionId })
+      .orderBy('id', 'desc')
+      .limit(25)
+      .offset(offset);
+  },
+
+  getAllPackages(db, collectionId) {
+    return db('packages')
+      .where({ collection: collectionId })
+      .orderBy('id', 'desc');
   },
 
   cleanCollection(collection) {
