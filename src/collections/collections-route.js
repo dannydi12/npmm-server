@@ -81,8 +81,8 @@ collectionRouter
     collectionService
       .getPackagesByCollection(req.app.get('db'), collectionId, offset)
       .then((collection) => {
-        const names = collection.map((set) => set.name);
-        const ids = collection.map((set) => set.id);
+        const names = collection.map((set) => set.name); // separtely saving names and id's to manually add to the object
+        const ids = collection.map((set) => set.id); // that is being returned to us via our npms query.
 
         collectionService.npmsAPI(names).then((data) => {
           if (data.length === 0) {

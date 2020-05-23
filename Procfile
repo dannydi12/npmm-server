@@ -1,1 +1,1 @@
-web: node src/server.js
+web: pm2 start ./src/server.js -i max
