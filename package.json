@@ -4,7 +4,8 @@
   "description": "",
   "main": "./src/app.js",
   "scripts": {
-    "start": "node ./src/server.js",
+    "oldstart": "node ./src/server.js",
+    "start": "pm2-runtime start ecosystem.config.js --env production",
     "cluster": "pm2 start ./src/server.js -i max",
     "mochatest": "mocha -t 7000 --require test/setup.js",
     "test": "nyc --reporter=text --reporter=lcov --check-coverage --statements 60 --lines 60 npm run mochatest",
