@@ -66,14 +66,11 @@ Open endpoints require no authentication.
 
 Basic CRUD operations in regard to collections.
 
-- [Get User Collections](docs/collections/get.md) : `GET /collections`
+- [Get All of the User Collections](docs/collections/get.md) : `GET /collections`
 - [Create a User Collection](docs/collections/post.md) : `POST /collections`
+- [Get a Specific User Collection](docs/collections/id/get.md) : `GET /collections/:id`
 - [Update a User Collection](docs/collections/id/patch.md) : `PATCH /collections/:id`
-- [Delete a User Collection](docs/collections/)
-- [Create A Thought](docs/thoughts/post.md) : `POST /thoughts/`
-- [Get A Thought](docs/thoughts/id/get.md) : `GET /thoughts/:id`
-- [Update A Thought](docs/thoughts/id/patch.md) : `PATCH /thoughts/:id`
-- [Delete A Thought](docs/thoughts/id/delete.md) : `DELETE /thoughts/:id`
+- [Delete a User Collection](docs/collections/id/delete.md) : `DELETE /collections/:id`
 
 ## Built With
 
