@@ -38,14 +38,11 @@ collectionRouter
       .then((check) => {
         if (check.length > 0) {
           return res.status(400).end();
-        } else {
-          collectionService
-            .addCollection(req.app.get('db'), name, user_id)
-            .then((collection) => {
-              return res.status(201).json(collection);
-            })
-            .catch(next);
         }
+        collectionService
+          .addCollection(req.app.get('db'), name, user_id)
+          .then((collection) => res.status(201).json(collection))
+          .catch(next);
       });
   });
 
@@ -62,21 +59,16 @@ collectionRouter
     if (justNames === 'true') {
       return collectionService
         .getAllPackages(req.app.get('db'), collectionId)
-        .then((packs) => {
-          return res.json(packs);
-        });
+        .then((packs) => res.json(packs));
     }
 
-    let collectionName = async () =>
-      await collectionService.getCollectionName(
-        req.app.get('db'),
-        collectionId
-      );
+    const collectionName = async () => await collectionService.getCollectionName(
+      req.app.get('db'),
+      collectionId,
+    );
 
     let nameOfCollection;
-    collectionName().then((name) =>
-      name ? (nameOfCollection = name.collection_name) : null
-    );
+    collectionName().then((name) => (name ? (nameOfCollection = name.collection_name) : null));
 
     collectionService
       .getPackagesByCollection(req.app.get('db'), collectionId, offset)
@@ -88,8 +80,8 @@ collectionRouter
           if (data.length === 0) {
             return res.json({ name: nameOfCollection, packs: [] });
           }
-          for (let i in data) {
-            data[i]['id'] = ids[i];
+          for (const i in data) {
+            data[i].id = ids[i];
           }
           return res.json({
             name: nameOfCollection,
@@ -118,9 +110,7 @@ collectionRouter
 
     collectionService
       .updateCollection(req.app.get('db'), collectionId, name)
-      .then((collection) => {
-        return res.status(200).json(collection);
-      })
+      .then((collection) => res.status(200).json(collection))
       .catch(next);
   })
   .delete((req, res, next) => {
@@ -132,9 +122,7 @@ collectionRouter
 
     collectionService
       .deleteCollection(req.app.get('db'), collectionId)
-      .then((result) => {
-        return res.status(204).end();
-      })
+      .then((result) => res.status(204).end())
       .catch(next);
   });
 

@@ -1,6 +1,6 @@
 const knex = require('knex');
-const app = require('../src/app');
 const assert = require('assert');
+const app = require('../src/app');
 
 describe('Auth login', () => {
   let db;
@@ -15,9 +15,8 @@ describe('Auth login', () => {
 
   after('disconnect from db', () => db.destroy());
 
-  before('cleanup', () => {
-    return db.raw(
-      `TRUNCATE
+  before('cleanup', () => db.raw(
+    `TRUNCATE
       users
       RESTART IDENTITY CASCADE;
     
@@ -27,17 +26,14 @@ describe('Auth login', () => {
     
     TRUNCATE
       packages
-      RESTART IDENTITY CASCADE;`
-    );
-  });
+      RESTART IDENTITY CASCADE;`,
+  ));
 
-  before('create base user', () => {
-    return db.raw(
-      `INSERT INTO users (email, password)
+  before('create base user', () => db.raw(
+    `INSERT INTO users (email, password)
        VALUES
-       ('demo@demo.com', '$2a$04$DjkbEZXF5djK5j/wgpjBY.vqOxiqvUk5tXUSlvwQIv0sOOmmFV/O6');`
-    );
-  });
+       ('demo@demo.com', '$2a$04$DjkbEZXF5djK5j/wgpjBY.vqOxiqvUk5tXUSlvwQIv0sOOmmFV/O6');`,
+  ));
 
   describe('/api/auth/login', () => {
     it('With valid credentials, logs a user in and returns a bearer token', () => {

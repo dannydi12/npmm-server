@@ -81,7 +81,7 @@ const collectionsService = {
     return db('collections')
       .insert({
         collection_name: name,
-        user_id: user_id,
+        user_id,
       })
       .returning('*')
       .then((row) => row[0]);

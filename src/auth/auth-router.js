@@ -14,11 +14,13 @@ authRouter.post('/login', jsonBodyParser, (req, res, next) => {
     return res.status(400).json({ error: 'invalid email format' });
   }
 
-  for (const [key, value] of Object.entries(loginuser))
-    if (value == null)
+  for (const [key, value] of Object.entries(loginuser)) {
+    if (value == null) {
       return res.status(400).json({
         error: `Missing ${key} in request body`,
       });
+    }
+  }
 
   loginuser.email = loginuser.email.toLowerCase();
 
@@ -31,7 +33,7 @@ authRouter.post('/login', jsonBodyParser, (req, res, next) => {
       }
       return AuthService.comparePasswords(
         loginuser.password,
-        dbUser.password
+        dbUser.password,
       ).then((compareMatch) => {
         if (!compareMatch) {
           return res

@@ -1,6 +1,7 @@
 const express = require('express');
 const packagesService = require('./packages-service');
 const { requireAuth } = require('../middleware/jwt-auth');
+
 const packagesRouter = express.Router();
 const jsonBodyParser = express.json();
 
@@ -22,14 +23,11 @@ packagesRouter
       .then((pack) => {
         if (pack.length > 0) {
           return res.status(400).json({ error: 'package exists' });
-        } else {
-          packagesService
-            .addPackage(req.app.get('db'), collectionId, name)
-            .then((addedPack) => {
-              return res.status(200).json(addedPack);
-            })
-            .catch(next);
         }
+        packagesService
+          .addPackage(req.app.get('db'), collectionId, name)
+          .then((addedPack) => res.status(200).json(addedPack))
+          .catch(next);
       });
   });
 
@@ -45,9 +43,7 @@ packagesRouter
 
     packagesService
       .deletePackage(req.app.get('db'), packageId)
-      .then((deleted) => {
-        return res.status(204).end();
-      })
+      .then((deleted) => res.status(204).end())
       .catch(next);
   });
 
