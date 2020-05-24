@@ -18,13 +18,13 @@ packagesRouter
       return res.status(400).json({ error: 'invalid input' });
     }
 
-    packagesService
+    return packagesService
       .checkIfPackageExists(req.app.get('db'), collectionId, name)
       .then((pack) => {
         if (pack.length > 0) {
           return res.status(400).json({ error: 'package exists' });
         }
-        packagesService
+        return packagesService
           .addPackage(req.app.get('db'), collectionId, name)
           .then((addedPack) => res.status(200).json(addedPack))
           .catch(next);
@@ -41,9 +41,9 @@ packagesRouter
       return res.status(400).send({ error: 'invalid input' });
     }
 
-    packagesService
+    return packagesService
       .deletePackage(req.app.get('db'), packageId)
-      .then((deleted) => res.status(204).end())
+      .then(() => res.status(204).end())
       .catch(next);
   });
 
