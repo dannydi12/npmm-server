@@ -10,8 +10,6 @@ Get a list of user created collections
 
 **Auth required** : YES
 
-**Data**: `{id: (collections id), name: (name of collection)}`
-
 ## Success Response
 
 **Condition** : If the user exists it should return at least the Favorites collection
