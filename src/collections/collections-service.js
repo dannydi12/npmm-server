@@ -59,29 +59,27 @@ const collectionsService = {
       body: JSON.stringify(nameArray),
     })
       .then((result) => result.json())
-      .then((resJSON) => {
-        const packages = nameArray.map((name) => {
-          if (resJSON[name]) {
-            return {
-              package: {
-                name,
-                description: resJSON[name].collected.metadata.description,
-                links: resJSON[name].collected.metadata.links,
-                version: resJSON[name].collected.metadata.version,
-              },
-              score: resJSON[name].score,
-            };
-          }
-        });
-        return packages;
-      });
+      .then((resJSON) => nameArray.map((name) => {
+        if (resJSON[name]) {
+          return {
+            package: {
+              name,
+              description: resJSON[name].collected.metadata.description,
+              links: resJSON[name].collected.metadata.links,
+              version: resJSON[name].collected.metadata.version,
+            },
+            score: resJSON[name].score,
+          };
+        }
+        return undefined;
+      }));
   },
 
-  addCollection(db, name, user_id) {
+  addCollection(db, name, userId) {
     return db('collections')
       .insert({
         collection_name: name,
-        user_id: user_id,
+        user_id: userId,
       })
       .returning('*')
       .then((row) => row[0]);

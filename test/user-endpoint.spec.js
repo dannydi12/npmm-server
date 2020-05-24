@@ -1,6 +1,7 @@
+/* eslint-disable no-undef */
 const knex = require('knex');
-const app = require('../src/app');
 const assert = require('assert');
+const app = require('../src/app');
 
 describe('user registration', () => {
   let db;
@@ -15,9 +16,8 @@ describe('user registration', () => {
 
   after('disconnect from db', () => db.destroy());
 
-  before('cleanup', () => {
-    return db.raw(
-      `TRUNCATE
+  before('cleanup', () => db.raw(
+    `TRUNCATE
       users
       RESTART IDENTITY CASCADE;
     
@@ -27,9 +27,8 @@ describe('user registration', () => {
     
     TRUNCATE
       packages
-      RESTART IDENTITY CASCADE;`
-    );
-  });
+      RESTART IDENTITY CASCADE;`,
+  ));
 
   describe('/api/users', () => {
     it('If a user succesfully signs up they are returned a bearer token and 200 status', () => {

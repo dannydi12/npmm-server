@@ -23,6 +23,7 @@ app.use(limiter);
 app.use(morgan(morganOption));
 app.use(helmet());
 app.use(cors());
+// eslint-disable-next-line no-unused-vars
 app.use((error, req, res, next) => {
   let response;
   if (NODE_ENV === 'production') {
@@ -32,10 +33,9 @@ app.use((error, req, res, next) => {
       },
     };
   } else {
-    console.log(error);
     response = { message: error.message, error };
   }
-  res.status(500).send(response);
+  return res.status(500).send(response);
 });
 
 app.use('/api/auth', authRoute);

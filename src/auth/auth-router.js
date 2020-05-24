@@ -9,20 +9,24 @@ authRouter.post('/login', jsonBodyParser, (req, res, next) => {
   const loginuser = { email, password };
 
   if (
+    // eslint-disable-next-line no-useless-escape
     !new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(email)
   ) {
     return res.status(400).json({ error: 'invalid email format' });
   }
 
-  for (const [key, value] of Object.entries(loginuser))
-    if (value == null)
+  // eslint-disable-next-line no-restricted-syntax
+  for (const [key, value] of Object.entries(loginuser)) {
+    if (value == null) {
       return res.status(400).json({
         error: `Missing ${key} in request body`,
       });
+    }
+  }
 
   loginuser.email = loginuser.email.toLowerCase();
 
-  AuthService.getUserWithUserName(req.app.get('db'), loginuser.email)
+  return AuthService.getUserWithUserName(req.app.get('db'), loginuser.email)
     .then((dbUser) => {
       if (!dbUser) {
         return res
@@ -31,7 +35,7 @@ authRouter.post('/login', jsonBodyParser, (req, res, next) => {
       }
       return AuthService.comparePasswords(
         loginuser.password,
-        dbUser.password
+        dbUser.password,
       ).then((compareMatch) => {
         if (!compareMatch) {
           return res
@@ -41,7 +45,7 @@ authRouter.post('/login', jsonBodyParser, (req, res, next) => {
 
         const sub = `${dbUser.id}`;
         const payload = { email: dbUser.email };
-        res
+        return res
           .status(200)
           .send({ authToken: AuthService.createJwt(sub, payload) });
       });

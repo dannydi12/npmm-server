@@ -12,19 +12,17 @@ collectionRouter
     if (req.url !== '/') {
       return res.status(400).json({ error: 'NO PARAMS HERE' });
     }
-    collectionService
+    return collectionService
       .getAllCollections(req.app.get('db'), req.payload.sub)
-      .then((all_collections) => {
-        res
-          .status(200)
-          .json(collectionService.cleanCollection(all_collections));
-      })
+      .then((allCollections) => res
+        .status(200)
+        .json(collectionService.cleanCollection(allCollections)))
       .catch(next);
   })
 
   .post(jsonBodyParser, (req, res, next) => {
     const { name } = req.body;
-    const user_id = req.payload.sub;
+    const userId = req.payload.sub;
 
     if (!name) {
       return res.status(400).json({ error: 'missing required content' });
@@ -33,26 +31,23 @@ collectionRouter
       return res.status(400).json({ error: 'empty string in request body' });
     }
 
-    collectionService
-      .checkIfCollectionExists(req.app.get('db'), user_id, name)
+    return collectionService
+      .checkIfCollectionExists(req.app.get('db'), userId, name)
       .then((check) => {
         if (check.length > 0) {
           return res.status(400).end();
-        } else {
-          collectionService
-            .addCollection(req.app.get('db'), name, user_id)
-            .then((collection) => {
-              return res.status(201).json(collection);
-            })
-            .catch(next);
         }
+        return collectionService
+          .addCollection(req.app.get('db'), name, userId)
+          .then((collection) => res.status(201).json(collection))
+          .catch(next);
       });
   });
 
 collectionRouter
   .route('/:collectionId')
   .all(requireAuth)
-  .get((req, res, next) => {
+  .get(async (req, res, next) => {
     const { justNames, offset } = req.query;
     const { collectionId } = req.params;
     if (!Number(collectionId)) {
@@ -62,42 +57,44 @@ collectionRouter
     if (justNames === 'true') {
       return collectionService
         .getAllPackages(req.app.get('db'), collectionId)
-        .then((packs) => {
-          return res.json(packs);
-        });
+        .then((packs) => res.json(packs));
     }
 
-    let collectionName = async () =>
-      await collectionService.getCollectionName(
-        req.app.get('db'),
-        collectionId
-      );
+    const nameOfCollection = await collectionService.getCollectionName(
+      req.app.get('db'),
+      collectionId,
+    ).then((name) => (name ? name.collection_name : null)).catch(next);
 
-    let nameOfCollection;
-    collectionName().then((name) =>
-      name ? (nameOfCollection = name.collection_name) : null
-    );
+    if (!nameOfCollection) {
+      return res.status(404).send({ error: 'collection does\'t exist' });
+    }
 
-    collectionService
-      .getPackagesByCollection(req.app.get('db'), collectionId, offset)
-      .then((collection) => {
-        const names = collection.map((set) => set.name); // separtely saving names and id's to manually add to the object
-        const ids = collection.map((set) => set.id); // that is being returned to us via our npms query.
+    const collectionPacks = await collectionService.getPackagesByCollection(req.app.get('db'), collectionId, offset).catch(next);
 
-        collectionService.npmsAPI(names).then((data) => {
-          if (data.length === 0) {
-            return res.json({ name: nameOfCollection, packs: [] });
-          }
-          for (let i in data) {
-            data[i]['id'] = ids[i];
-          }
-          return res.json({
-            name: nameOfCollection,
-            packs: data.filter((element) => element != null),
-          });
-        });
-      })
-      .catch(next);
+    if (!collectionPacks) {
+      return res.json({ name: nameOfCollection, packs: [] }).catch(next);
+    }
+
+    const names = collectionPacks.map((pack) => pack.name);
+    const npmsData = await collectionService.npmsAPI(names).catch(next);
+
+    // If npms doesn't return anything, send an empty array back
+    if (!npmsData[0]) {
+      return res.json({
+        name: nameOfCollection,
+        packs: [],
+      });
+    }
+
+    // adding package IDs from our local database
+    Object.entries(npmsData).forEach((_, i) => {
+      npmsData[i].id = collectionPacks[i].id;
+    });
+
+    return res.json({
+      name: nameOfCollection,
+      packs: npmsData.filter((element) => element != null),
+    });
   })
   .patch(jsonBodyParser, (req, res, next) => {
     const { collectionId } = req.params;
@@ -116,11 +113,9 @@ collectionRouter
       return res.status(400).send({ error: 'required field empty' });
     }
 
-    collectionService
+    return collectionService
       .updateCollection(req.app.get('db'), collectionId, name)
-      .then((collection) => {
-        return res.status(200).json(collection);
-      })
+      .then((collection) => res.status(200).json(collection))
       .catch(next);
   })
   .delete((req, res, next) => {
@@ -130,11 +125,9 @@ collectionRouter
       return res.status(400).send({ error: 'invalid parameter' });
     }
 
-    collectionService
+    return collectionService
       .deleteCollection(req.app.get('db'), collectionId)
-      .then((result) => {
-        return res.status(204).end();
-      })
+      .then(() => res.status(204).end())
       .catch(next);
   });
 
