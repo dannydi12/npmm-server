@@ -2,17 +2,16 @@
 
 [![CodeFactor](https://www.codefactor.io/repository/github/dannydi12/npmm-server/badge)](https://www.codefactor.io/repository/github/dannydi12/npmm-server)
 
-ThoughtBin allows users to anonymously share and create content on a simple and frictionless micro-platform. Think of it as a privacy-centric Twitter with a hint of 4Chan. A live demo can be found at [https://npmm.dev/](https://npmm.dev/)
+NPMM allows developers to frictionlessly browse and save npm packages. Saved packages can then be programmatically installed with our command line interface. Imagine the [npmjs.com](https://npmjs.com) website but with a few extra features for ease of use.
+. A live demo can be found at [https://npmm.dev/](https://npmm.dev/)
 
 ## Summary
 
-This API provides the means to create, delete, and update collections and with those collections you can add npm packages.
-
-## Motivation
+This API provides the means to create, delete, and update collections/packages.
 
 ## NPMM CLI
 
-Make sure to check out our companion CLI that allows you to install your collections from NPMM in your local project: [NPMM CLI](https://github.com/maleckim/npmm-cli).
+Make sure to check out our companion CLI that allows you to install your collections from NPMM in your local project: **[NPMM CLI](https://github.com/maleckim/npmm-cli)**.
 
 ## Installation
 
@@ -49,17 +48,21 @@ Make sure to go to `[npmm-folder-name]/example.env` , rename it to `.env`, and t
 Open endpoints require no authentication.
 
 - [Get Token](docs/token.md) : `POST /token` - Get a token for subsequent authorized requests
-- [Get Thoughts](docs/thoughts/get.md) : `GET /thoughts/` - Get 10 thoughts at any given index
 
 ### Endpoints that require Authentication
 
-Basic CRUD operations in regard to collections.
+CRUD operations in regard to collections:
 
 - [Get All of the User Collections](docs/collections/get.md) : `GET /collections`
 - [Create a User Collection](docs/collections/post.md) : `POST /collections`
 - [Get a Specific User Collection](docs/collections/id/get.md) : `GET /collections/:id`
 - [Update a User Collection](docs/collections/id/patch.md) : `PATCH /collections/:id`
 - [Delete a User Collection](docs/collections/id/delete.md) : `DELETE /collections/:id`
+
+CRUD operations in regard to packages:
+
+- [Add a New Package](docs/packages/post.md) : `POST /packages`
+- [Delete a Package](docs/packages/id/delete.md) : `DELETE /packages/:id`
 
 ## Built With
 
@@ -70,7 +73,7 @@ Basic CRUD operations in regard to collections.
 - Knex
 - JSON Web Token
 - Express
-- Mocha, and Chai
+- Mocha and Chai
 - Deployed with Heroku
 
 #### Front-end:
@@ -96,6 +99,7 @@ Basic CRUD operations in regard to collections.
 - **Michael Ploughman** - [Portfolio](https://)
 - **Vik Birdi** - [Portfolio](https://)
 
-## License
+## Acknowledgments
 
-This project is licensed under the MIT License
+- [npms.io](https://npms.io) - An awesome elastic-search API for npm
+- [npm](https://npmjs.com) - Only the best package manager ever
