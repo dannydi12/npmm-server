@@ -53,8 +53,6 @@ describe('/api/packages', () => {
 
   describe('POST /api/packages', () => {
     it('return an object containing meta data relevant to packages', () => {
-      const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
-
       const replica = { collectionId: 1, name: 'Test Package' };
 
       return supertest(app)
@@ -70,8 +68,6 @@ describe('/api/packages', () => {
         .expect(200);
     });
     it('returns 400 when the collectionId is not a number', () => {
-      const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
-
       const badData = { collectionId: 'hey', name: 'Test Package' };
 
       return supertest(app)
@@ -81,8 +77,6 @@ describe('/api/packages', () => {
         .expect(400);
     });
     it('returns 400 when missing either name or collectionId from the request body', () => {
-      const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
-
       const badData = { collectionId: 1 };
 
       return supertest(app)
@@ -92,8 +86,6 @@ describe('/api/packages', () => {
         .expect(400);
     });
     it('returns 400 when attempting to add a pre-existing package', () => {
-      const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVtby5jb20iLCJpYXQiOjE1ODkzNDA0NTcsInN1YiI6IjEifQ.KkhzaB4ipN6VnpwB6mgA8ywivXu9db2Po5bgvebq5n8';
-
       const badData = { collectionId: 1, name: 'react' };
 
       return supertest(app)
