@@ -1,5 +1,5 @@
+/* eslint-disable no-undef */
 const knex = require('knex');
-const assert = require('assert');
 const app = require('../src/app');
 
 describe('Auth login', () => {
