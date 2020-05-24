@@ -113,7 +113,7 @@ collectionRouter
       return res.status(400).send({ error: 'required field empty' });
     }
 
-    collectionService
+    return collectionService
       .updateCollection(req.app.get('db'), collectionId, name)
       .then((collection) => res.status(200).json(collection))
       .catch(next);
@@ -125,9 +125,9 @@ collectionRouter
       return res.status(400).send({ error: 'invalid parameter' });
     }
 
-    collectionService
+    return collectionService
       .deleteCollection(req.app.get('db'), collectionId)
-      .then((result) => res.status(204).end())
+      .then(() => res.status(204).end())
       .catch(next);
   });
 
