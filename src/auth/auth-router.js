@@ -14,6 +14,7 @@ authRouter.post('/login', jsonBodyParser, (req, res, next) => {
     return res.status(400).json({ error: 'invalid email format' });
   }
 
+  // eslint-disable-next-line no-restricted-syntax
   for (const [key, value] of Object.entries(loginuser)) {
     if (value == null) {
       return res.status(400).json({
@@ -24,7 +25,7 @@ authRouter.post('/login', jsonBodyParser, (req, res, next) => {
 
   loginuser.email = loginuser.email.toLowerCase();
 
-  AuthService.getUserWithUserName(req.app.get('db'), loginuser.email)
+  return AuthService.getUserWithUserName(req.app.get('db'), loginuser.email)
     .then((dbUser) => {
       if (!dbUser) {
         return res
@@ -43,7 +44,7 @@ authRouter.post('/login', jsonBodyParser, (req, res, next) => {
 
         const sub = `${dbUser.id}`;
         const payload = { email: dbUser.email };
-        res
+        return res
           .status(200)
           .send({ authToken: AuthService.createJwt(sub, payload) });
       });
