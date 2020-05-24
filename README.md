@@ -85,7 +85,7 @@ CRUD operations in regard to packages:
 - JSON Web Token
 - Redux
 - Jest
-- Deployed with Zeit
+- Deployed with Vercel
 
 ## Demo
 
