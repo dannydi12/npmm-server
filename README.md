@@ -92,13 +92,13 @@ CRUD operations in regard to packages:
 
 - [Live Demo](https://npmm.dev/)
 
-## Authors
+## The Authors
 
-- **Daniel Di Venere** - [Portfolio](https://)
+- **Vik Birdi** - [Portfolio](https://vikbirdi.com)
+- **Daniel Di Venere** - [Portfolio](https://imdan.io/)
+- **Matthew Malecki** - [Portfolio](https://portfolio.maleckim.now.sh/)
+- **Michael Ploughman** - [Portfolio](https://MichaelHPloughman.com)
 - **Josh Young** - [Portfolio](https://joshyoung.net)
-- **Matthew Malecki** - [Portfolio](https://)
-- **Michael Ploughman** - [Portfolio](https://)
-- **Vik Birdi** - [Portfolio](https://)
 
 ## Acknowledgments
 
