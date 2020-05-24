@@ -12,19 +12,17 @@ collectionRouter
     if (req.url !== '/') {
       return res.status(400).json({ error: 'NO PARAMS HERE' });
     }
-    collectionService
+    return collectionService
       .getAllCollections(req.app.get('db'), req.payload.sub)
-      .then((all_collections) => {
-        res
-          .status(200)
-          .json(collectionService.cleanCollection(all_collections));
-      })
+      .then((allCollections) => res
+        .status(200)
+        .json(collectionService.cleanCollection(allCollections)))
       .catch(next);
   })
 
   .post(jsonBodyParser, (req, res, next) => {
     const { name } = req.body;
-    const user_id = req.payload.sub;
+    const userId = req.payload.sub;
 
     if (!name) {
       return res.status(400).json({ error: 'missing required content' });
@@ -33,14 +31,14 @@ collectionRouter
       return res.status(400).json({ error: 'empty string in request body' });
     }
 
-    collectionService
-      .checkIfCollectionExists(req.app.get('db'), user_id, name)
+    return collectionService
+      .checkIfCollectionExists(req.app.get('db'), userId, name)
       .then((check) => {
         if (check.length > 0) {
           return res.status(400).end();
         }
-        collectionService
-          .addCollection(req.app.get('db'), name, user_id)
+        return collectionService
+          .addCollection(req.app.get('db'), name, userId)
           .then((collection) => res.status(201).json(collection))
           .catch(next);
       });
