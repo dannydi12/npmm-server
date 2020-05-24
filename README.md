@@ -103,3 +103,7 @@ CRUD operations in regard to packages:
 
 - [npms.io](https://npms.io) - An awesome elastic-search API for npm
 - [npm](https://npmjs.com) - Only the best package manager ever
+
+## License
+
+This project is licensed under the MIT License
