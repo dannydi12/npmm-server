@@ -9,6 +9,7 @@ authRouter.post('/login', jsonBodyParser, (req, res, next) => {
   const loginuser = { email, password };
 
   if (
+    // eslint-disable-next-line no-useless-escape
     !new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(email)
   ) {
     return res.status(400).json({ error: 'invalid email format' });
