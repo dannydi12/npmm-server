@@ -18,7 +18,7 @@ usersRouter.route('/').post(jsonBodyParser, (req, res, next) => {
   let sub;
   const payload = { email: `${email}` };
 
-  usersService
+  return usersService
     .registerUser(req.app.get('db'), email, saltedPass)
     .then((idResponse) => {
       if (!idResponse) {
@@ -29,7 +29,7 @@ usersRouter.route('/').post(jsonBodyParser, (req, res, next) => {
         .addCollection(req.app.get('db'), 'Favorites', idResponse)
         .then((added) => packageService
           .addPackage(req.app.get('db'), added.id, '@npmmjs/npmm')
-          .then((addedPackage) => res
+          .then(() => res
             .status(200)
             .send({ authToken: AuthService.createJwt(sub, payload) })));
     })
