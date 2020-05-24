@@ -1,8 +1,8 @@
-# Post New A Thought
+# Create a New Collection
 
-Post the thought of the authenticated user if they are owner.
+Create a new collection for a user
 
-**URL** : `/collections`
+**URL** : `/api/collections`
 
 **Method** : `POST`
 

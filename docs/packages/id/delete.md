@@ -2,7 +2,7 @@
 
 Delete a users package from a collection
 
-**URL** : `/collections/:id`
+**URL** : `/api/collections/:id`
 
 **URL Parameters** :
 

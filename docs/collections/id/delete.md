@@ -2,7 +2,7 @@
 
 Delete a users collection
 
-**URL** : `/collections/:id`
+**URL** : `/api/collections/:id`
 
 **URL Parameters** :
 

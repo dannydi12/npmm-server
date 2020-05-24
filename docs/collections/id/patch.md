@@ -2,7 +2,7 @@
 
 Update the Collection Name
 
-**URL** : `/thoughts/:id`
+**URL** : `/api/collections/:id`
 
 **URL Parameters** :
 

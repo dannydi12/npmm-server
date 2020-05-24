@@ -1,8 +1,8 @@
-# Get A Token For Auth
+# Get A Token For Auth on Sign Up
 
 This endpoint is used to get a token to use in subsequent requests to the server.
 
-**URL** : `/api/auth/login`
+**URL** : `/api/users`
 
 **Method** : `POST`
 
@@ -19,7 +19,7 @@ This endpoint is used to get a token to use in subsequent requests to the server
 
 ## Success Response
 
-**Condition** : If the credentials are valid and the user exists.
+**Condition** : If the credentials are valid and the user does not exists.
 
 **Code** : `201 CREATED`
 

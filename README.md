@@ -47,22 +47,23 @@ Make sure to go to `[npmm-folder-name]/example.env` , rename it to `.env`, and t
 
 Open endpoints require no authentication.
 
-- [Get Token](docs/token.md) : `POST /token` - Get a token for subsequent authorized requests
+- [Sign In](docs/token.md) : `POST /api/auth/login` - Get a token for subsequent authorized requests
+- [Sign Up](docs/users/post.md) : `POST /api/users` - Get a token for subsequent authorized requests
 
 ### Endpoints that require Authentication
 
 CRUD operations in regard to collections:
 
-- [Get All of the User Collections](docs/collections/get.md) : `GET /collections`
-- [Create a User Collection](docs/collections/post.md) : `POST /collections`
-- [Get a Specific User Collection](docs/collections/id/get.md) : `GET /collections/:id`
-- [Update a User Collection](docs/collections/id/patch.md) : `PATCH /collections/:id`
-- [Delete a User Collection](docs/collections/id/delete.md) : `DELETE /collections/:id`
+- [Get All of the User Collections](docs/collections/get.md) : `GET /api/collections`
+- [Create a User Collection](docs/collections/post.md) : `POST /api/collections`
+- [Get a Specific User Collection](docs/collections/id/get.md) : `GET /api/collections/:id`
+- [Update a User Collection](docs/collections/id/patch.md) : `PATCH /api/collections/:id`
+- [Delete a User Collection](docs/collections/id/delete.md) : `DELETE /api/collections/:id`
 
 CRUD operations in regard to packages:
 
-- [Add a New Package](docs/packages/post.md) : `POST /packages`
-- [Delete a Package](docs/packages/id/delete.md) : `DELETE /packages/:id`
+- [Add a New Package](docs/packages/post.md) : `POST /api/packages`
+- [Delete a Package](docs/packages/id/delete.md) : `DELETE /api/packages/:id`
 
 ## Built With
 

@@ -1,8 +1,8 @@
-# Get All Posted Thoughts
+# Get All Collections
 
 Get a list of user created collections
 
-**URL** : `/collections`
+**URL** : `/api/collections`
 
 **Query Parameters** :
 
@@ -14,7 +14,7 @@ Get a list of user created collections
 
 ## Success Response
 
-**Condition** : If the user exists it should return atleast the Favorites collection
+**Condition** : If the user exists it should return at least the Favorites collection
 
 **Code** : `200 OK`
 

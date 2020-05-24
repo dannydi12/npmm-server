@@ -2,7 +2,7 @@
 
 When supplying an id paramater, you will receive the name of the collection and all the packs plus metadata regarding those packs.
 
-**URL** : `/collections/:id`
+**URL** : `/api/collections/:id`
 
 **URL Parameters** :
 
