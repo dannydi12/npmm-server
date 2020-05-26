@@ -27,11 +27,15 @@ usersRouter.route('/').post(jsonBodyParser, (req, res, next) => {
       sub = `${idResponse}`;
       return collectionService
         .addCollection(req.app.get('db'), 'Favorites', idResponse)
-        .then((added) => packageService
-          .addPackage(req.app.get('db'), added.id, '@npmmjs/npmm')
-          .then(() => res
-            .status(200)
-            .send({ authToken: AuthService.createJwt(sub, payload) })));
+        .then((added) =>
+          packageService
+            .addPackage(req.app.get('db'), added.id, 'npmm')
+            .then(() =>
+              res
+                .status(200)
+                .send({ authToken: AuthService.createJwt(sub, payload) })
+            )
+        );
     })
     .catch(next);
 });
