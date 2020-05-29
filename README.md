@@ -1,12 +1,14 @@
 # npmm Server - *n*ode *p*ackage *m*anager *m*anager
 
 <img src="https://npmm.dev/static/media/npmm-logo.f26fefbb.svg" width="50%">
-[![CodeFactor](https://www.codefactor.io/repository/github/dannydi12/npmm-server/badge)](https://www.codefactor.io/repository/github/dannydi12/npmm-server)
+
 ## Live App @ [npmm](https://npmm.dev)
 
 ## CLI Tool @ [Github](https://github.com/maleckim/npmm-cli)
 
 ## Client side code @ [Github](https://github.com/dannydi12/npmm-client)
+
+[![CodeFactor](https://www.codefactor.io/repository/github/dannydi12/npmm-server/badge)](https://www.codefactor.io/repository/github/dannydi12/npmm-server)
 
 <p float="left"><img src="http://npmm.dev/npmm-screenshot-landing.png" width="20%"><img src="http://npmm.dev/npmm-screenshot-menu.png" width="20%"><img src="http://npmm.dev/npmm-screenshot-login.png" width="20%"><img src="http://npmm.dev/npmm-screenshot-search.png" width="20%"><img src="http://npmm.dev/npmm-screenshot-package.png" width="20%"></p>
 
