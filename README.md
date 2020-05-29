@@ -1,7 +1,7 @@
 # npmm Server - *n*ode *p*ackage *m*anager *m*anager
-[![CodeFactor](https://www.codefactor.io/repository/github/dannydi12/npmm-server/badge)](https://www.codefactor.io/repository/github/dannydi12/npmm-server)
-<img src="https://npmm.dev/static/media/npmm-logo.f26fefbb.svg" width="50%">
 
+<img src="https://npmm.dev/static/media/npmm-logo.f26fefbb.svg" width="50%">
+[![CodeFactor](https://www.codefactor.io/repository/github/dannydi12/npmm-server/badge)](https://www.codefactor.io/repository/github/dannydi12/npmm-server)
 ## Live App @ [npmm](https://npmm.dev)
 
 ## CLI Tool @ [Github](https://github.com/maleckim/npmm-cli)
