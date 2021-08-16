@@ -22,7 +22,9 @@ app.use(limiter);
 
 app.use(morgan(morganOption));
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+  origin: '*',
+}));
 // eslint-disable-next-line no-unused-vars
 app.use((error, req, res, next) => {
   let response;
