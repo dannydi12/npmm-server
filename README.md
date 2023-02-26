@@ -86,7 +86,7 @@ CRUD operations in regard to packages:
 - JSON Web Token
 - Express
 - Mocha and Chai
-- Deployed with Heroku
+- Deployed with Railway.app
 
 #### Front-end:
 
